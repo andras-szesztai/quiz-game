@@ -3,8 +3,10 @@ import React from "react"
 import { gsap } from "gsap"
 import { MotionPathPlugin } from "gsap/MotionPathPlugin"
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin"
+import { MotionPathHelper } from "gsap/MotionPathHelper"
 import { usePrevious } from "react-use"
 import { jsx, css } from "@emotion/core"
+import chroma from "chroma-js"
 
 import "./App.css"
 
@@ -14,6 +16,7 @@ const svgDims = 900
 
 gsap.registerPlugin(MotionPathPlugin)
 gsap.registerPlugin(MorphSVGPlugin)
+gsap.registerPlugin(MotionPathHelper)
 
 // Morphed circle
 // M35,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S16.9,0.5,23.3,0.5S35,5.7,35,12.2z
@@ -88,23 +91,94 @@ function App() {
   const [isInitialCompleted, setIsInitialCompleted] = React.useState(false)
 
   React.useEffect(() => {
-    gsap
-      .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
-      .set(".star", { scale: 0, x: 12, y: 10 })
-      .set("#title", { opacity: 0, y: 100 })
-      .set("#intro", { opacity: 0, y: 75 })
-      .to(".star", {
-        scale: 1,
-        transformOrigin: "50%",
-        duration: 1,
-        ease: "elastic.out(1, 0.4)",
-        stagger: {
-          amount: 0.8,
-          from: "end",
+    // MotionPathHelper.create("#indicator", {
+    //   path: "#circle",
+    //   pathOpacity: 0.6,
+    //   alignOrigin: [0.52, 0.55],
+    //   start: 0,
+    //   end:0.16666666,
+    //   duration: 1,
+    // })
+    // gsap.to("#indicator", {
+    //   duration: 0,
+    //   ease: "power1.inOut",
+    //   motionPath: {
+    //     path: "#circle",
+    //     align: "#circle",
+    //     alignOrigin: [0.52, 0.55],
+    //     start: 0,
+    //     end: 0,
+    //   },
+    // })
+
+    gsap.to("#indicator", {
+      motionPath: {
+        path: "#circle",
+        align: "#circle",
+        autoRotate: true,
+        alignOrigin: [0.5, 0.5],
+        start: 0,
+        end: 0,
+      },
+      duration: 0.5,
+      ease: "power3.inOut",
+    })
+    gsap.to("#indicator", {
+      keyframes: [
+        {
+          morphSVG:
+            "M246.9,53.2c0,11.5-9.3,15.1-20.7,15.1s-38.3-2.7-38.3-14.2s26.8-15.9,38.3-15.9S246.9,41.7,246.9,53.2z",
+          duration: 0.4,
         },
-      })
-      .to("#title", { y: 0, opacity: 1 }, "-=.8")
-      .to("#intro", { y: 0, opacity: 1 }, "-=.4")
+        {
+          morphSVG:
+            "M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8 C228.9,32.5,238.2,41.8,238.2,53.3z",
+          duration: 0.1,
+          ease: "elastic.out(1, .8)",
+        },
+      ],
+    })
+
+    // gsap
+    //   .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
+    //   .set(".star", { scale: 0, x: 12, y: 10 })
+    //   .set("#title", { opacity: 0, y: 100 })
+    //   .set("#intro", { opacity: 0, y: 75 })
+    //   // .set("#indicator", { scale: 0 })
+    //   .to(".star", {
+    //     scale: 1,
+    //     transformOrigin: "50%",
+    //     duration: 1,
+    //     ease: "elastic.out(1, 0.4)",
+    //     stagger: {
+    //       amount: 0.8,
+    //       from: "end",
+    //     },
+    //   })
+    //   .to("#title", { y: 0, opacity: 1 }, "-=.8")
+    //   .to("#intro", { y: 0, opacity: 1 }, "-=.4")
+    // // .to(
+    // //   "#star-12",
+    // //   {
+    // //     scale: 1.25,
+    // //     cursor: "pointer",
+    // //     repeat: -1,
+    // //     yoyo: true,
+    // //     duration: 0.5,
+    // //   },
+    // //   "+=1"
+    // // )
+
+    // // .to(
+    // //   "#indicator",
+    // //   {
+    // //     transformOrigin: "56% 66%",
+    // //     scale: 1,
+    // //     duration: 0.5,
+    // //     ease: "elastic.out(1, 0.4)",
+    // //   },
+    // //   0
+    // // )
   }, [])
 
   return (
@@ -183,6 +257,12 @@ function App() {
     c6,0,10.8,4.8,10.8,10.8v412.7C434.6,429.8,429.8,434.6,423.8,434.6z"
             />
             <g id="stars">
+              <path
+                id="indicator"
+                fill={chroma(starColor).alpha(0.25).hex()}
+                d="M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8
+                C228.9,32.5,238.2,41.8,238.2,53.3z"
+              />
               <path
                 id="star-12"
                 className="star"
@@ -284,13 +364,11 @@ function App() {
       l7.2,3.8c0.4,0.2,0.8,0,1-0.3c0.1-0.1,0.1-0.3,0.1-0.4l-1.4-8l5.7-5.6c0.3-0.3,0.3-0.8,0-1.1C311.8,73.6,311.7,73.5,311.5,73.5z"
               />
             </g>
-            <circle
+            <path
               id="circle"
               fill="none"
+              d="M218.153,53.972 C249.863,53.972 282.185,66.217 307.288,81.809 328.2661,94.83605 335.378,97.804 348.044,117.938 363.503,142.46 382.253,185.6825 382.253,218.072 382.253,249.782 373.517,276.264 357.928,301.37 343.4495,324.6775 341.777,335.135 317.825,349.51 293.854,363.873 247.598,382.172 218.153,382.172 186.443,382.172 159.084,373.15 133.989,357.584 110.6705,343.1165 95.921,332.721 81.769,308.834 67.603,284.935 54.053,247.5495 54.053,218.072 54.053,186.327 63.62,157.488 79.212,132.387 93.686,109.0755 108.357,94.004 132.118,80.23 155.868,66.45 188.7057,53.971 218.152,53.971"
               // stroke="#333"
-              cx="217.4"
-              cy="217.4"
-              r="164.1"
             />
           </svg>
         </div>
