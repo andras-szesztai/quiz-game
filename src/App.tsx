@@ -4,6 +4,7 @@ import { gsap } from "gsap"
 import { MotionPathPlugin } from "gsap/MotionPathPlugin"
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin"
 import { MotionPathHelper } from "gsap/MotionPathHelper"
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin"
 import { usePrevious } from "react-use"
 import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
@@ -17,6 +18,7 @@ const svgDims = 900
 gsap.registerPlugin(MotionPathPlugin)
 gsap.registerPlugin(MorphSVGPlugin)
 gsap.registerPlugin(MotionPathHelper)
+gsap.registerPlugin(DrawSVGPlugin)
 
 // Morphed circle
 // M35,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S16.9,0.5,23.3,0.5S35,5.7,35,12.2z
@@ -153,18 +155,29 @@ function App() {
       .to("#star-12", {
         cursor: "pointer",
       })
-      .to(
+      .set("#indicator", { rotate: -90 })
+      .from("#indicator", { drawSVG: "0%", ease: "none", duration: 20 })
+      .from(
         "#indicator",
         {
-          keyframes: [{ scale: 1.25 }, { scale: 1 }],
-          repeat: -1,
-          repeatDelay: 1,
-          yoyo: true,
           duration: 0.5,
           ease: "power1.inOut",
+          keyframes: [{ scale: 1.25 }, { scale: 1 }],
         },
-        "+=1"
+        "-=5"
       )
+    // .to(
+    //   "#indicator",
+    //   {
+    //     keyframes: [{ scale: 1.25 }, { scale: 1 }],
+    //     repeat: -1,
+    //     repeatDelay: 1,
+    //     yoyo: true,
+    //     duration: 0.5,
+    //     ease: "power1.inOut",
+    //   },
+    //   "+=3"
+    // )
     //   .to("#indicator", {
     //     motionPath: {
     //       path: "#path-1",
@@ -214,7 +227,7 @@ function App() {
               transform: translate(-50%, -50%);
               color: #fff;
               width: 50%;
-              height: 45%;
+              height: 50%;
               /* border: 1px solid ${starColor}; */
 
               display: flex;
@@ -229,8 +242,8 @@ function App() {
               css={css`
                 font-weight: 200;
                 margin: 0;
-                font-size: 48px;
-                line-height: 1.2;
+                font-size: 56px;
+                line-height: 1.25;
                 margin-bottom: 16px;
               `}
             >
@@ -277,6 +290,9 @@ function App() {
               <path
                 id="indicator"
                 fill={chroma(starColor).alpha(0.25).hex()}
+                stroke-width={2}
+                stroke={starColor}
+                strokeLinecap="round"
                 d="M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8
                 C228.9,32.5,238.2,41.8,238.2,53.3z"
               />
