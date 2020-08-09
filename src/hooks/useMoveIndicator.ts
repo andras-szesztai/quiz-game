@@ -1,16 +1,43 @@
 import React from "react"
 import gsap from "gsap"
 
-import { delays } from "../styles/animations"
-
 interface Params {
   buttonRef: HTMLButtonElement | null;
-  markCorrect: () => void;
 }
 
-const useMoveIndicator = ({ buttonRef, markCorrect }: Params) => {
+const useMoveIndicator = ({ buttonRef }: Params) => {
   const [nextQuestion, setNextQuestion] = React.useState(1)
   React.useEffect(() => {
+    const markCorrect = () => {
+      gsap
+        .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
+        .set(`#correct-icon-${nextQuestion - 1}`, {
+          motionPath: {
+            align: `#path-${nextQuestion - 1}`,
+            path: `#path-${nextQuestion - 1}`,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: 0,
+          },
+        })
+        .to(`#star-${nextQuestion - 1}`, {
+          scale: 0,
+          opacity: 0,
+        })
+        .to(
+          `#correct-icon-${nextQuestion - 1}`,
+          {
+            scale: 1,
+          },
+          "<"
+        )
+        .fromTo(
+          `.correct-line-${nextQuestion - 1}`,
+          { drawSVG: "75% 100%" },
+          { drawSVG: "0 0", opacity: 0, ease: "power4.out" },
+          "-=.4"
+        )
+    }
     if (nextQuestion > 1) {
       gsap
         .timeline()
@@ -62,8 +89,8 @@ const useMoveIndicator = ({ buttonRef, markCorrect }: Params) => {
           "<"
         )
     }
-  }, [buttonRef, markCorrect, nextQuestion])
-  return setNextQuestion
+  }, [buttonRef, nextQuestion])
+  return {setNextQuestion, nextQuestion}
 }
 
 export default useMoveIndicator

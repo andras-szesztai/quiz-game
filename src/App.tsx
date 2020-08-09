@@ -17,10 +17,11 @@ import { useMoveIndicator } from "./hooks"
 import questions from "./data/questions"
 import { CorrectIcon } from "./components"
 import paths from "./data/paths"
+import { pulsate, stopPulsate } from "./utils"
 
 const starColor = "#F9C750"
 const bgColor = "#577590"
-const svgDims = 900
+const svgDims = 750
 
 gsap.registerPlugin(MotionPathPlugin)
 gsap.registerPlugin(MorphSVGPlugin)
@@ -29,25 +30,11 @@ gsap.registerPlugin(DrawSVGPlugin)
 
 function App() {
   const [currentInput] = useWhatInput()
-
-  const pulsate = (delay = 0) => {
-    gsap.to("#indicator", {
-      keyframes: [{ scale: 1.2 }, { scale: 1 }],
-      repeat: -1,
-      yoyo: true,
-      duration: 0.5,
-      delay,
-      ease: "power1.inOut",
-    })
-  }
-  const stopPulsate = () => {
-    gsap.killTweensOf("#indicator", "scale")
-    gsap.to("#indicator", {
-      scale: 1,
-      duration: 0.5,
-      ease: "power1.inOut",
-    })
-  }
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const { setNextQuestion, nextQuestion } = useMoveIndicator({
+    buttonRef: buttonRef.current,
+  })
+  const [isInitialized, setIsInitialized] = React.useState(false)
 
   React.useEffect(() => {
     // MotionPathHelper.create("#indicator", {
@@ -58,10 +45,10 @@ function App() {
     //   end: 1,
     //   duration: 1,
     // })
-
     gsap
       .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
       .set(".star", { scale: 0, x: 12, y: 10 })
+      .set(".correct-icon", { scale: 0 })
       .set("#title", { opacity: 0, y: 100 })
       .set("#intro", { opacity: 0, y: 75 })
       .set("#indicator", { scale: 0 })
@@ -91,54 +78,12 @@ function App() {
       .to("#indicator", {
         transformOrigin: "50%",
         scale: 1,
-        onComplete: () => pulsate(3),
-      })
-  }, [])
-
-  const buttonRef = React.useRef<HTMLButtonElement>(null)
-
-  const markCorrect = () => {
-    gsap
-      .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
-      .set(`#correct-icon-${currentQuestion}`, {
-        motionPath: {
-          align: `#path-${currentQuestion}`,
-          path: `#path-${currentQuestion}`,
-          alignOrigin: [0.5, 0.5],
-          start: 0,
-          end: 0,
+        onComplete: () => {
+          pulsate(5)
+          setIsInitialized(true)
         },
       })
-      .to(`#star-${currentQuestion}`, {
-        scale: 0,
-        opacity: 0,
-      })
-      .to(
-        `#correct-icon-${currentQuestion}`,
-        {
-          scale: 1,
-        },
-        "<"
-      )
-      .fromTo(
-        `.correct-line-${currentQuestion}`,
-        { drawSVG: "75% 100%" },
-        { drawSVG: "0 0", opacity: 0, ease: "power4.out" },
-        "-=.4"
-      )
-  }
-
-  const setNextQuestion = useMoveIndicator({
-    buttonRef: buttonRef.current,
-    markCorrect,
-  })
-
-  const [currentQuestion, setCurrentQuestion] = React.useState(0)
-  React.useEffect(() => {
-    gsap.set(".correct-icon", {
-      scale: 0,
-    })
-  }, [])
+  }, [setIsInitialized])
 
   return (
     <div className="App">
@@ -163,11 +108,11 @@ function App() {
               cursor: pointer;
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
-            onFocus={() => currentQuestion === 0 && stopPulsate()}
-            onBlur={() => currentQuestion === 0 && pulsate()}
             onClick={() => {
-              setCurrentQuestion((prev) => prev + 1)
-              setNextQuestion((prev) => prev + 1)
+              if (isInitialized) {
+                stopPulsate()
+                setNextQuestion((prev) => prev + 1)
+              }
             }}
           />
           <div
@@ -191,9 +136,9 @@ function App() {
               css={css`
                 font-weight: 200;
                 margin: 0;
-                font-size: 56px;
-                line-height: 1.25;
-                margin-bottom: 16px;
+                font-size: 48px;
+                line-height: 1.3;
+                margin-bottom: 24px;
               `}
             >
               The life of women and men in Europe
@@ -201,9 +146,10 @@ function App() {
             <p
               id="intro"
               css={css`
-                font-size: 20px;
+                margin: 0;
+                font-size: 16px;
                 font-weight: 500;
-                line-height: 1.6;
+                line-height: 1.7;
               `}
             >
               This quiz is a redesigned version of the introduction to the
