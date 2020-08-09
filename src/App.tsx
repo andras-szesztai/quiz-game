@@ -8,8 +8,10 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin"
 import { usePrevious } from "react-use"
 import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
+import useWhatInput from "react-use-what-input"
 
 import "./App.css"
+import { buttonFocus, buttonNoFocus } from "./styles/theme"
 
 const starColor = "#F9C750"
 const bgColor = "#577590"
@@ -92,31 +94,17 @@ function App() {
 
   const [isInitialCompleted, setIsInitialCompleted] = React.useState(false)
 
+  const [currentInput] = useWhatInput()
+
   React.useEffect(() => {
     // MotionPathHelper.create("#indicator", {
-    //   path: "#path-1",
+    //   path: "#path-2",
     //   pathOpacity: 0.2,
     //   alignOrigin: [0.5, 0.5],
     //   start: 0,
     //   end: 1,
     //   duration: 1,
     // })
-
-    // gsap.to("#indicator", {
-    //   keyframes: [
-    //     {
-    //       morphSVG:
-    //         "M246.9,53.2c0,11.5-9.3,15.1-20.7,15.1s-38.3-2.7-38.3-14.2s26.8-15.9,38.3-15.9S246.9,41.7,246.9,53.2z",
-    //       duration: 0.4,
-    //     },
-    //     {
-    //       morphSVG:
-    //         "M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8 C228.9,32.5,238.2,41.8,238.2,53.3z",
-    //       duration: 0.1,
-    //       ease: "elastic.out(1, .8)",
-    //     },
-    //   ],
-    // // })
 
     gsap
       .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
@@ -156,40 +144,44 @@ function App() {
         cursor: "pointer",
       })
       .set("#indicator", { rotate: -90 })
-      .from("#indicator", { drawSVG: "0%", ease: "none", duration: 20 })
-      .from(
-        "#indicator",
-        {
-          duration: 0.5,
-          ease: "power1.inOut",
-          keyframes: [{ scale: 1.25 }, { scale: 1 }],
-        },
-        "-=5"
-      )
-    // .to(
+
+    // gsap.to(buttonRef.current, {
+    //   motionPath: {
+    //     path: "#path-1",
+    //     align: "#path-1",
+    //     alignOrigin: [0.5, 0.5],
+    //     start: 0,
+    //     end: 1,
+    //   },
+    //   duration: 0.5,
+    //   ease: "power4.inOut",
+    // })
+
+    // Timer animation
+    // .from("#indicator", { drawSVG: "0%", ease: "none", duration: 20 })
+    // .from(
     //   "#indicator",
     //   {
-    //     keyframes: [{ scale: 1.25 }, { scale: 1 }],
-    //     repeat: -1,
-    //     repeatDelay: 1,
-    //     yoyo: true,
     //     duration: 0.5,
     //     ease: "power1.inOut",
+    //     keyframes: [{ scale: 1.25 }, { scale: 1 }],
     //   },
-    //   "+=3"
+    //   "-=5"
     // )
-    //   .to("#indicator", {
-    //     motionPath: {
-    //       path: "#path-1",
-    //       align: "#path-1",
-    //       autoRotate: true,
-    //       alignOrigin: [0.5, 0.5],
-    //       start: 0,
-    //       end: 1,
-    //     },
-    //     duration: 0.5,
-    //     ease: "power4.inOut",
-    //   })
+
+    // Move animation
+    // .to("#indicator", {
+    //   motionPath: {
+    //     path: "#path-1",
+    //     align: "#path-1",
+    //     autoRotate: true,
+    //     alignOrigin: [0.5, 0.5],
+    //     start: 0,
+    //     end: 1,
+    //   },
+    //   duration: 0.5,
+    //   ease: "power4.inOut",
+    // })
     // .to(
     //   "#indicator",
     //   {
@@ -211,6 +203,9 @@ function App() {
     // )
   }, [])
 
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const [currentQuestion, setCurrentQuestion] = React.useState(0)
+
   return (
     <div className="App">
       <header className="App-header">
@@ -219,6 +214,24 @@ function App() {
             position: relative;
           `}
         >
+          <button
+            ref={buttonRef}
+            css={css`
+              position: absolute;
+              left: calc(50% - 50px);
+              top: 60px;
+
+              width: 100px;
+              height: 100px;
+              border: none;
+              border-radius: 4px;
+              background: transparent;
+              ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
+            `}
+            onFocus={() => console.log("focus")}
+            onBlur={() => console.log("blur")}
+            onClick={() => console.log("click")}
+          />
           <div
             css={css`
               position: absolute;
@@ -265,6 +278,7 @@ function App() {
                 target="_blank"
                 css={css`
                   color: ${starColor};
+                  ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
                 `}
               >
                 The life of women and men in Europe – a statistical portrait
@@ -295,6 +309,7 @@ function App() {
                 strokeLinecap="round"
                 d="M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8
                 C228.9,32.5,238.2,41.8,238.2,53.3z"
+                onClick={() => console.log("clicked")}
               />
               <path
                 id="star-12"
@@ -400,8 +415,14 @@ function App() {
             <path
               id="path-1"
               fill="none"
-              d="M217.63,52.711 C217.63,52.711 274.928,53.83 299.334,76.656"
               // stroke="#333"
+              d="M217.63,52.711 C217.63,52.711 274.928,53.83 299.334,76.656"
+            />
+            <path
+              id="path-2"
+              fill="none"
+              // stroke="#333"
+              d="M298.876,76.827 C298.876,76.827 345.593,101.289 357.584,135.211"
             />
           </svg>
         </div>

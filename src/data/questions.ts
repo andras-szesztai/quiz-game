@@ -1,4 +1,5 @@
 const questions = [{
+  number: 1,
   category: "Milestones",
   question: "At what age do young women and men leave their parental home?",
   answers: [
@@ -9,6 +10,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-1a.html?lang=en"
 },
 {
+  number: 2,
   category: "Living together",
   question: "In the EU, there are more young men aged up to 18 than women. This sentence is:",
   answers: [
@@ -18,6 +20,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-1b.html?lang=en"
 },
 {
+  number: 3,
   category: "Health perception",
   question: "In the EU, how do women and men perceive their health?In the EU, how do women and men perceive their health?",
   answers: [
@@ -28,6 +31,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-1c.html?lang=en"
 },
 {
+  number: 4,
   category: "Life satisfaction",
   question: "In the EU, who is happier with their life – men or women?",
   answers: [
@@ -38,6 +42,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-1d.html?lang=en"
 },
 {
+  number: 5,
   category: "Education",
   question: "In the EU on average, who has the higher education level?",
   answers: [
@@ -48,6 +53,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-2a.html?lang=en"
 },
 {
+  number: 6,
   category: "Employment",
   question: "The proportion of persons working is highest:",
   answers: [
@@ -58,6 +64,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-2b.html?lang=en"
 },
 {
+  number: 7,
   category: "Careers",
   question: "Pick the correct sentence: In the EU…",
   answers: [
@@ -68,6 +75,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-2c.html?lang=en"
 },
 {
+  number: 8,
   category: "Earnings",
   question: "A woman in the EU earns less than a man, but how large is the difference?",
   answers: [
@@ -78,6 +86,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-2d.html?lang=en"
 },
 {
+  number: 9,
   category: "Nutrition habits",
   question: "The share of persons considered to be overweight (Body Mass Index of over 25) is highest:",
   answers: [
@@ -88,6 +97,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-3a.html?lang=en"
 },
 {
+  number: 10,
   category: "Cultural habits",
   question: "Pick the correct sentence",
   answers: [
@@ -98,6 +108,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-3b.html?lang=en"
 },
 {
+  number: 11,
   category: "Internet habits",
   question: "Who uses the internet more for social media?",
   answers: [
@@ -108,6 +119,7 @@ const questions = [{
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-3c.html?lang=en"
 },
 {
+  number: 12,
   category: "Cooking and housework",
   question: "Pick the correct sentence:",
   answers: [
