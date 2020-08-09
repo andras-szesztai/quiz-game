@@ -2,16 +2,25 @@ import React from "react"
 import gsap from "gsap"
 
 interface Params {
-  buttonRef: HTMLButtonElement | null;
+  buttonRef: HTMLButtonElement | null
+  isAnswerTrue: boolean
+  isAnswerFalse: boolean
 }
 
-const useMoveIndicator = ({ buttonRef }: Params) => {
+const useMoveIndicator = ({
+  buttonRef,
+  isAnswerTrue,
+  isAnswerFalse,
+}: Params) => {
   const [nextQuestion, setNextQuestion] = React.useState(1)
   React.useEffect(() => {
-    const markCorrect = () => {
-      gsap
-        .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
-        .set(`#correct-icon-${nextQuestion - 1}`, {
+    const swapMark = () => {
+      const moveTl = gsap.timeline({
+        defaults: { ease: "back.out(1.8)", duration: 0.5 },
+      })
+      const text = isAnswerTrue ? "correct" : "false"
+      moveTl
+        .set(`#${text}-icon-${nextQuestion - 1}`, {
           motionPath: {
             align: `#path-${nextQuestion - 1}`,
             path: `#path-${nextQuestion - 1}`,
@@ -25,20 +34,22 @@ const useMoveIndicator = ({ buttonRef }: Params) => {
           opacity: 0,
         })
         .to(
-          `#correct-icon-${nextQuestion - 1}`,
+          `#${text}-icon-${nextQuestion - 1}`,
           {
             scale: 1,
           },
           "<"
         )
-        .fromTo(
-          `.correct-line-${nextQuestion - 1}`,
+      if (isAnswerTrue) {
+        moveTl.fromTo(
+          `.${text}-line-${nextQuestion - 1}`,
           { drawSVG: "75% 100%" },
           { drawSVG: "0 0", opacity: 0, ease: "power4.out" },
           "-=.4"
         )
+      }
     }
-    if (nextQuestion > 1) {
+    if (isAnswerTrue || isAnswerFalse) {
       gsap
         .timeline()
         .to("#indicator", {
@@ -84,13 +95,15 @@ const useMoveIndicator = ({ buttonRef }: Params) => {
             },
             duration: 0.5,
             ease: "power4.inOut",
-            onComplete: markCorrect
+            onComplete: () => {
+              swapMark()
+            },
           },
           "<"
         )
     }
-  }, [buttonRef, nextQuestion])
-  return {setNextQuestion, nextQuestion}
+  }, [isAnswerTrue, isAnswerFalse, nextQuestion, buttonRef])
+  return setNextQuestion
 }
 
 export default useMoveIndicator

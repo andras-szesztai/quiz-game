@@ -9,13 +9,14 @@ import { usePrevious } from "react-use"
 import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
 import useWhatInput from "react-use-what-input"
+import random from "lodash/random"
 
 import "./App.css"
 import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 import { delays } from "./styles/animations"
 import { useMoveIndicator } from "./hooks"
 import questions from "./data/questions"
-import { CorrectIcon } from "./components"
+import { CorrectIcon, FalseIcon } from "./components"
 import paths from "./data/paths"
 import { pulsate, stopPulsate } from "./utils"
 
@@ -31,8 +32,13 @@ gsap.registerPlugin(DrawSVGPlugin)
 function App() {
   const [currentInput] = useWhatInput()
   const buttonRef = React.useRef<HTMLButtonElement>(null)
-  const { setNextQuestion, nextQuestion } = useMoveIndicator({
+  const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
+  const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
+
+  const setNextQuestion = useMoveIndicator({
     buttonRef: buttonRef.current,
+    isAnswerTrue,
+    isAnswerFalse,
   })
   const [isInitialized, setIsInitialized] = React.useState(false)
 
@@ -49,6 +55,7 @@ function App() {
       .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
       .set(".star", { scale: 0, x: 12, y: 10 })
       .set(".correct-icon", { scale: 0 })
+      .set(".false-icon", { scale: 0 })
       .set("#title", { opacity: 0, y: 100 })
       .set("#intro", { opacity: 0, y: 75 })
       .set("#indicator", { scale: 0 })
@@ -112,6 +119,9 @@ function App() {
               if (isInitialized) {
                 stopPulsate()
                 setNextQuestion((prev) => prev + 1)
+                random(0, 1) === 1
+                  ? setIsAnswerTrue(true)
+                  : setIsAnswerFalse(true)
               }
             }}
           />
@@ -182,9 +192,13 @@ function App() {
               d="M423.8,434.6H11.1c-6,0-10.8-4.8-10.8-10.8V11.1c0-6,4.8-10.8,10.8-10.8h412.7
     c6,0,10.8,4.8,10.8,10.8v412.7C434.6,429.8,429.8,434.6,423.8,434.6z"
             />
-            {questions.map((_, i) => (
-              <CorrectIcon id={i + 1} />
+            {questions.map((q, i) => (
+              <React.Fragment key={q.number}>
+                <CorrectIcon id={i + 1} />
+                <FalseIcon id={i + 1} />
+              </React.Fragment>
             ))}
+
             <g id="stars">
               <path
                 id="indicator"
