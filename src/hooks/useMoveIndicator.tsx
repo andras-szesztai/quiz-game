@@ -5,14 +5,15 @@ interface Params {
   buttonRef: HTMLButtonElement | null
   isAnswerTrue: boolean
   isAnswerFalse: boolean
+  nextQuestion: number
 }
 
 const useMoveIndicator = ({
   buttonRef,
   isAnswerTrue,
   isAnswerFalse,
+  nextQuestion,
 }: Params) => {
-  const [nextQuestion, setNextQuestion] = React.useState(1)
   React.useEffect(() => {
     const swapMark = () => {
       const moveTl = gsap.timeline({
@@ -107,8 +108,7 @@ const useMoveIndicator = ({
           "<"
         )
     }
-  }, [isAnswerTrue, isAnswerFalse, nextQuestion, buttonRef])
-  return {setNextQuestion, nextQuestion}
+  }, [isAnswerTrue, isAnswerFalse, buttonRef, nextQuestion])
 }
 
 export default useMoveIndicator

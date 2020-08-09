@@ -4,7 +4,7 @@ const questions = [{
   question: "At what age do young women and men leave their parental home?",
   answers: [
     { selector: "a", text: "Women at the age of 25, men at the age of 27", isTrue: true },
-    { selector: "b", text: "Men at the age of 20, women at the age of 22Men at the age of 20, women at the age of 22", isTrue: false },
+    { selector: "b", text: "Men at the age of 20, women at the age of 22", isTrue: false },
     { selector: "c", text: "Both at the age of 21", isTrue: false }
   ],
   url: "https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-1a.html?lang=en"
@@ -131,5 +131,11 @@ const questions = [{
 }
 ]
 
+
+export interface Answer {
+  selector: string
+  text: string
+  isTrue: boolean
+}
 
 export default questions

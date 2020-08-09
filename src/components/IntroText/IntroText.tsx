@@ -1,6 +1,6 @@
-import React from "react"
+/** @jsx jsx */
 import { AnimatePresence, motion } from "framer-motion"
-import { css } from "@emotion/core"
+import { css, jsx } from "@emotion/core"
 
 import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
 

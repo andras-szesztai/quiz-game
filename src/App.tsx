@@ -16,7 +16,13 @@ import "./App.css"
 import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 import { delays } from "./styles/animations"
 import { useMoveIndicator, useInitialize } from "./hooks"
-import { CorrectIcon, FalseIcon, Stars, IntroText } from "./components"
+import {
+  CorrectIcon,
+  FalseIcon,
+  Stars,
+  IntroText,
+  QuestionText,
+} from "./components"
 import { paths, questions } from "./data"
 import { pulsate, stopPulsate } from "./utils"
 
@@ -33,24 +39,30 @@ function App() {
   const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
 
-  const { setNextQuestion, nextQuestion } = useMoveIndicator({
+  const [nextQuestion, setNextQuestion] = React.useState(1)
+  useMoveIndicator({
     buttonRef: buttonRef.current,
     isAnswerTrue,
     isAnswerFalse,
+    nextQuestion,
   })
 
   const isInitialized = useInitialize(buttonRef.current)
   const [isStart, setIsStart] = React.useState(false)
   React.useEffect(() => {
     if (isStart) {
-      gsap.to("#intro-container", {
-        y: -100,
-        opacity: 0,
-        duration: 0.5,
-        ease: "back.in(1.8)",
-      })
+      gsap
+        .timeline({ defaults: { ease: "back.out(1.9)", duration: 0.5 } })
+        .to("#intro-container", {
+          y: -100,
+          opacity: 0,
+          duration: 0.5,
+          ease: "back.in(1.8)",
+        })
+        .set(`#question-${nextQuestion}`, { opacity: 0, y: 100 })
+        .to(`#question-${nextQuestion}`, { opacity: 1, y: 0 }, "+=.5")
     }
-  }, [isStart])
+  }, [isStart, nextQuestion])
 
   return (
     <div className="App">
@@ -72,7 +84,9 @@ function App() {
               border: none;
               border-radius: 4px;
               background: transparent;
-              cursor: pointer;
+              cursor: ${isAnswerFalse || isAnswerTrue || !isStart
+                ? "pointer"
+                : "default"};
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
             onClick={() => {
@@ -81,9 +95,9 @@ function App() {
                 setIsStart(true)
               } else {
                 if (isAnswerFalse || isAnswerTrue) {
-                  setNextQuestion((prev) => prev + 1)
                   isAnswerTrue && setIsAnswerTrue(false)
                   isAnswerFalse && setIsAnswerFalse(false)
+                  setNextQuestion((prev) => prev + 1)
                 }
               }
             }}
@@ -106,6 +120,16 @@ function App() {
             `}
           >
             <IntroText isStart={isStart} currentInput={currentInput} />
+            {questions.map((q) => (
+              <QuestionText
+                key={q.number}
+                id={q.number}
+                nextQuestion={nextQuestion}
+                isStart={isStart}
+                question={q.question}
+                answers={q.answers}
+              />
+            ))}
           </div>
           <svg
             x="0px"
@@ -114,12 +138,6 @@ function App() {
             height={`${svgDims}px`}
             viewBox="0 0 434.9 434.9"
           >
-            <path
-              id="background"
-              fill="#577590"
-              d="M423.8,434.6H11.1c-6,0-10.8-4.8-10.8-10.8V11.1c0-6,4.8-10.8,10.8-10.8h412.7
-    c6,0,10.8,4.8,10.8,10.8v412.7C434.6,429.8,429.8,434.6,423.8,434.6z"
-            />
             {questions.map((q, i) => (
               <React.Fragment key={q.number}>
                 <CorrectIcon id={i + 1} />
