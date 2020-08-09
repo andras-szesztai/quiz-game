@@ -1,10 +1,12 @@
 /** @jsx jsx */
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, AnimateSharedLayout } from "framer-motion"
 import { css, jsx } from "@emotion/core"
-import { GoPrimitiveDot } from "react-icons/go"
+import chroma from "chroma-js"
 
 import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
 import { Answer } from "../../data/questions"
+import Paragraph from "../Paragraph/Paragraph"
+import React from "react"
 
 interface Props {
   id: number
@@ -21,15 +23,15 @@ const QuestionText = ({
   question,
   answers,
 }: Props) => {
-  console.log("QuestionText -> isStart", isStart)
-  console.log("QuestionText -> nextQuestion", nextQuestion)
+  const [position, setPosition] = React.useState(0)
+
   return (
     <AnimatePresence>
       {isStart && id === nextQuestion && (
         <motion.div
           id={`question-${id}`}
           initial={{
-            opacity: 0,
+            opacity: 1,
           }}
           exit={{
             visibility: "hidden",
@@ -38,55 +40,91 @@ const QuestionText = ({
         >
           <h3
             css={css`
-              font-size: 32px;
+              font-size: 24px;
               font-weight: 300;
               text-align: left;
               margin: 0;
               margin-bottom: 24px;
+              position: relative;
             `}
           >
             {question}
           </h3>
-          {answers.map((a) => (
-            <div
-              css={css`
-                display: flex;
-              `}
-            >
-              <div
+          <AnimateSharedLayout>
+            {answers.map((a, i) => (
+              <button
+                key={a.text}
                 css={css`
-                  font-size: 16px;
-                  font-weight: 500;
+                  display: flex;
+                  cursor: pointer;
+                  font-family: "Montserrat", sans-serif !important;
 
-                  align-self: flex-start;
+                  border-radius: 4px;
+                  border: none;
+                  margin-bottom: 8px;
+                  color: #fff;
+                  background-color: transparent;
+                  padding: 0;
+                  ${buttonNoFocus}
 
-                  color: ${colors.bgRound};
-
-                  margin-top: 2px;
-                  margin-right: 8px;
                   position: relative;
                 `}
+                onMouseOver={() => {
+                  if (position !== i) {
+                    setPosition(i)
+                  }
+                }}
               >
-                <span>
-                  <GoPrimitiveDot size={32} color={colors.accent} />
-                </span>
-                {a.selector}
-              </div>
-              <p
-                id="intro"
-                css={css`
-                  margin: 0;
-                  font-size: 16px;
-                  font-weight: 500;
-                  line-height: 1.7;
-                  text-align: left;
-                  margin-bottom: 8px;
-                `}
-              >
-                {a.text}
-              </p>
-            </div>
-          ))}
+                {position === i && (
+                  <motion.div
+                    css={css`
+                      position: fixed;
+                      width: 32px;
+                      height: 32px;
+                      border-radius: 32px;
+                      background-color: red;
+                      background-color: ${chroma(colors.accent)
+                        .alpha(0.25)
+                        .hex()};
+                      border: 1px solid ${colors.accent};
+                      top: -4px;
+                      left: 3px;
+                      position: absolute;
+                    `}
+                    layoutId="outline"
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 30,
+                    }}
+                  />
+                )}
+
+                <div
+                  css={css`
+                    font-size: 16px;
+                    font-weight: 500;
+
+                    align-self: flex-start;
+
+                    color: ${colors.bgRound};
+                    background-color: ${colors.accent};
+                    width: 16px;
+                    min-width: 16px;
+                    height: 16px;
+                    border-radius: 16px;
+
+                    margin: 5px 12px 0 12px;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  `}
+                />
+                <Paragraph text={a.text} isLeftAlign />
+              </button>
+            ))}
+          </AnimateSharedLayout>
         </motion.div>
       )}
     </AnimatePresence>

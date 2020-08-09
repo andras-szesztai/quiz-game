@@ -119,13 +119,13 @@ function App() {
               user-select: none;
             `}
           >
-            <IntroText isStart={isStart} currentInput={currentInput} />
+            {/* <IntroText isStart={isStart} currentInput={currentInput} /> */}
             {questions.map((q) => (
               <QuestionText
                 key={q.number}
                 id={q.number}
-                nextQuestion={nextQuestion}
-                isStart={isStart}
+                nextQuestion={1}
+                isStart={true}
                 question={q.question}
                 answers={q.answers}
               />
