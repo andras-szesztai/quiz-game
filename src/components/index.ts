@@ -1,0 +1,1 @@
+export { default as CorrectIcon } from './CorrectIcon'

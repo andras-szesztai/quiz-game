@@ -5,9 +5,10 @@ import { delays } from "../styles/animations"
 
 interface Params {
   buttonRef: HTMLButtonElement | null;
+  markCorrect: () => void;
 }
 
-const useMoveIndicator = ({ buttonRef }: Params) => {
+const useMoveIndicator = ({ buttonRef, markCorrect }: Params) => {
   const [nextQuestion, setNextQuestion] = React.useState(1)
   React.useEffect(() => {
     if (nextQuestion > 1) {
@@ -22,7 +23,6 @@ const useMoveIndicator = ({ buttonRef }: Params) => {
             start: 0,
             end: 1,
           },
-          delay: delays.indicatorMove,
           duration: 0.5,
           ease: "power4.inOut",
         })
@@ -57,11 +57,12 @@ const useMoveIndicator = ({ buttonRef }: Params) => {
             },
             duration: 0.5,
             ease: "power4.inOut",
+            onComplete: markCorrect
           },
           "<"
         )
     }
-  }, [buttonRef, nextQuestion])
+  }, [buttonRef, markCorrect, nextQuestion])
   return setNextQuestion
 }
 
