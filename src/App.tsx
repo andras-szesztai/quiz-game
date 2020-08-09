@@ -88,95 +88,14 @@ function App() {
       .to("#indicator", {
         transformOrigin: "50%",
         scale: 1,
-        rotate: -90,
         onComplete: () => pulsate(3),
       })
-    // gsap.to(buttonRef.current, {
-    //   motionPath: {
-    //     path: "#path-1",
-    //     align: "#path-1",
-    //     alignOrigin: [0.5, 0.5],
-    //     start: 0,
-    //     end: 1,
-    //   },
-    //   duration: 0.5,
-    //   ease: "power4.inOut",
-    // })
-
-    // Timer animation
-    // .from("#indicator", { drawSVG: "0%", ease: "none", duration: 20 })
-    // .from(
-    //   "#indicator",
-    //   {
-    //     duration: 0.5,
-    //     ease: "power1.inOut",
-    //     keyframes: [{ scale: 1.25 }, { scale: 1 }],
-    //   },
-    //   "-=5"
-    // )
-
-    // Move animation
-    // .to("#indicator", {
-    //   motionPath: {
-    //     path: "#path-1",
-    //     align: "#path-1",
-    //     autoRotate: true,
-    //     alignOrigin: [0.5, 0.5],
-    //     start: 0,
-    //     end: 1,
-    //   },
-    //   duration: 0.5,
-    //   ease: "power4.inOut",
-    // })
-    // .to(
-    //   "#indicator",
-    //   {
-    //     keyframes: [
-    //       {
-    //         morphSVG:
-    //           "M246.9,53.2c0,11.5-9.3,15.1-20.7,15.1s-38.3-2.7-38.3-14.2s26.8-15.9,38.3-15.9S246.9,41.7,246.9,53.2z",
-    //         duration: 0.4,
-    //       },
-    //       {
-    //         morphSVG:
-    //           "M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8 C228.9,32.5,238.2,41.8,238.2,53.3z",
-    //         duration: 0.2,
-    //         ease: "elastic.out(1, .8)",
-    //       },
-    //     ],
-    //   },
-    //   "<"
-    // )
   }, [])
 
   const buttonRef = React.useRef<HTMLButtonElement>(null)
   const setNextQuestion = useMoveIndicator({ buttonRef: buttonRef.current })
 
-  const timerTl = React.useRef(gsap.timeline())
-  const [startTimer, setStartTimer] = React.useState(false)
   const [currentQuestion, setCurrentQuestion] = React.useState(0)
-
-  React.useEffect(() => {
-    if (currentQuestion === 0) {
-      timerTl.current
-        .pause()
-        .to("#indicator", {
-          drawSVG: "0%",
-          ease: "power2.inOut",
-          duration: 1,
-        })
-        .to("#indicator", {
-          drawSVG: "100%",
-          ease: "none",
-          duration: 2, // TODO  back to 20
-          delay: 1,
-          onComplete: () => setNextQuestion((prev) => prev + 1),
-        })
-    }
-    if (currentQuestion === 1) {
-      timerTl.current.play()
-    }
-  }, [currentQuestion, setNextQuestion])
 
   return (
     <div className="App">
@@ -275,7 +194,7 @@ function App() {
               <path
                 id="indicator"
                 fill={chroma(starColor).alpha(0.25).hex()}
-                stroke-width={2}
+                stroke-width={1}
                 stroke={starColor}
                 strokeLinecap="round"
                 d="M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8
