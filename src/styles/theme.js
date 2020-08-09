@@ -1,10 +1,11 @@
 import { css } from "@emotion/core"
 
-
-const colors = {
+export const colors = {
   bgRound: "#577590",
+  correct: "#cfe5b8",
+  correctDark: "#8ba56b",
   accent: "#F9C750",
-  text: "#FFFFFF"
+  text: "#FFFFFF",
 }
 
 export const buttonFocus = css`

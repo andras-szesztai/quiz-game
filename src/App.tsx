@@ -11,7 +11,7 @@ import chroma from "chroma-js"
 import useWhatInput from "react-use-what-input"
 
 import "./App.css"
-import { buttonFocus, buttonNoFocus } from "./styles/theme"
+import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 import { delays } from "./styles/animations"
 import { useMoveIndicator } from "./hooks"
 
@@ -96,6 +96,44 @@ function App() {
   const setNextQuestion = useMoveIndicator({ buttonRef: buttonRef.current })
 
   const [currentQuestion, setCurrentQuestion] = React.useState(0)
+  const [isCorrect, setIsCorrect] = React.useState(false)
+  React.useEffect(() => {
+    gsap.set("#correct", {
+      scale: 0,
+    })
+
+    if (isCorrect) {
+      gsap
+        .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
+        .set("#correct", {
+          motionPath: {
+            path: `#path-${currentQuestion}`,
+            align: `#path-${currentQuestion}`,
+            autoRotate: true,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: 0,
+          },
+        })
+        .to("#star-12", {
+          scale: 0,
+          opacity: 0,
+        })
+        .to(
+          "#correct",
+          {
+            scale: 1,
+          },
+          "<"
+        )
+        .fromTo(
+          ".correct-line",
+          { drawSVG: "75% 100%" },
+          { drawSVG: "0 0", opacity: 0, ease: "power4.out" },
+          "-=.4"
+        )
+    }
+  }, [isCorrect, currentQuestion])
 
   return (
     <div className="App">
@@ -122,7 +160,10 @@ function App() {
             `}
             onFocus={() => currentQuestion === 0 && stopPulsate()}
             onBlur={() => currentQuestion === 0 && pulsate()}
-            onClick={() => setCurrentQuestion((prev) => prev + 1)}
+            onClick={() => {
+              setCurrentQuestion((prev) => prev + 1)
+              setIsCorrect(true)
+            }}
           />
           <div
             css={css`
@@ -190,6 +231,123 @@ function App() {
               d="M423.8,434.6H11.1c-6,0-10.8-4.8-10.8-10.8V11.1c0-6,4.8-10.8,10.8-10.8h412.7
     c6,0,10.8,4.8,10.8,10.8v412.7C434.6,429.8,429.8,434.6,423.8,434.6z"
             />
+            <g id="correct">
+              <circle fill={colors.correct} cx="217.5" cy="59.6" r="12.3" />
+              <path
+                fill={colors.correctDark}
+                d="M222.6,55.4l-7.7,6.2l-2.2-3.1c-0.3-0.4-0.9-0.5-1.3-0.2c-0.4,0.3-0.5,0.9-0.2,1.3l2.8,4
+		c0.2,0.2,0.4,0.4,0.7,0.4c0,0,0.1,0,0.1,0c0.2,0,0.4-0.1,0.6-0.2l8.5-6.9c0.4-0.3,0.5-0.9,0.1-1.3C223.6,55.2,223,55.1,222.6,55.4z
+		"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="217.5"
+                y1="39.2"
+                x2="217.5"
+                y2="45.3"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="207.3"
+                y1="41.9"
+                x2="210.4"
+                y2="47.2"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="199.8"
+                y1="49.3"
+                x2="205.1"
+                y2="52.4"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="197"
+                y1="59.5"
+                x2="203.1"
+                y2="59.5"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="199.7"
+                y1="69.7"
+                x2="205"
+                y2="66.7"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="207.1"
+                y1="77.2"
+                x2="210.2"
+                y2="71.9"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="217.3"
+                y1="80"
+                x2="217.3"
+                y2="73.9"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="227.5"
+                y1="77.3"
+                x2="224.5"
+                y2="72.1"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="235"
+                y1="69.9"
+                x2="229.7"
+                y2="66.9"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="237.8"
+                y1="59.7"
+                x2="231.7"
+                y2="59.7"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="235.1"
+                y1="49.5"
+                x2="229.9"
+                y2="52.6"
+              />
+              <line
+                className="correct-line"
+                stroke={colors.correct}
+                strokeLinecap="round"
+                x1="227.7"
+                y1="42"
+                x2="224.7"
+                y2="47.3"
+              />
+            </g>
             <g id="stars">
               <path
                 id="indicator"
