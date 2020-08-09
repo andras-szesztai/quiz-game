@@ -10,16 +10,15 @@ import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
 import useWhatInput from "react-use-what-input"
 import random from "lodash/random"
+import { AnimatePresence, motion } from "framer-motion"
 
 import "./App.css"
 import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 import { delays } from "./styles/animations"
 import { useMoveIndicator, useInitialize } from "./hooks"
-import questions from "./data/questions"
-import { CorrectIcon, FalseIcon } from "./components"
-import paths from "./data/paths"
+import { CorrectIcon, FalseIcon, Stars } from "./components"
+import { paths, questions } from "./data"
 import { pulsate, stopPulsate } from "./utils"
-import Stars from "./components/Stars"
 
 const svgDims = 750
 
@@ -34,13 +33,17 @@ function App() {
   const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
 
-  const setNextQuestion = useMoveIndicator({
+  const { setNextQuestion, nextQuestion } = useMoveIndicator({
     buttonRef: buttonRef.current,
     isAnswerTrue,
     isAnswerFalse,
   })
 
   const isInitialized = useInitialize(buttonRef.current)
+  const [isStart, setIsStart] = React.useState(false)
+  React.useEffect(() => {
+    
+  }, [isStart])
 
   return (
     <div className="App">
@@ -66,9 +69,15 @@ function App() {
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
             onClick={() => {
-              if (isInitialized) {
+              if (!isStart) {
                 stopPulsate()
-                setNextQuestion((prev) => prev + 1)
+                setIsStart(true)
+              } else {
+                if (isAnswerFalse || isAnswerTrue) {
+                  setNextQuestion((prev) => prev + 1)
+                  isAnswerTrue && setIsAnswerTrue(false)
+                  isAnswerFalse && setIsAnswerFalse(false)
+                }
               }
             }}
           />
@@ -88,18 +97,26 @@ function App() {
               user-select: none;
             `}
           >
-            <h1
-              id="title"
-              css={css`
-                font-weight: 200;
-                margin: 0;
-                font-size: 48px;
-                line-height: 1.3;
-                margin-bottom: 24px;
-              `}
-            >
-              The life of women and men in Europe
-            </h1>
+            <AnimatePresence>
+              {!isStart && (
+                <motion.h1
+                  id="title"
+                  css={css`
+                    font-weight: 200;
+                    margin: 0;
+                    font-size: 48px;
+                    line-height: 1.3;
+                    margin-bottom: 24px;
+                  `}
+                  exit={{
+                    visibility: "hidden",
+                    transition: { duration: 1, delay: 1 },
+                  }}
+                >
+                  The life of women and men in Europe
+                </motion.h1>
+              )}
+            </AnimatePresence>
             <p
               id="intro"
               css={css`
@@ -148,7 +165,7 @@ function App() {
             <path
               id="indicator"
               fill={chroma(colors.accent).alpha(0.25).hex()}
-              stroke-width={1}
+              strokeWidth={1}
               stroke={colors.accent}
               strokeLinecap="round"
               d="M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8
@@ -157,6 +174,7 @@ function App() {
             <Stars />
             {paths.map((p, i) => (
               <path
+                key={p.d}
                 id={`path-${i + 1}`}
                 fill="none"
                 //stroke="#333"

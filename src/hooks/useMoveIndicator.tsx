@@ -108,7 +108,7 @@ const useMoveIndicator = ({
         )
     }
   }, [isAnswerTrue, isAnswerFalse, nextQuestion, buttonRef])
-  return setNextQuestion
+  return {setNextQuestion, nextQuestion}
 }
 
 export default useMoveIndicator
