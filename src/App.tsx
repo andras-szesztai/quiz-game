@@ -12,6 +12,8 @@ import useWhatInput from "react-use-what-input"
 
 import "./App.css"
 import { buttonFocus, buttonNoFocus } from "./styles/theme"
+import { delays } from "./styles/animations"
+import { useMoveIndicator } from "./hooks"
 
 const starColor = "#F9C750"
 const bgColor = "#577590"
@@ -22,79 +24,27 @@ gsap.registerPlugin(MorphSVGPlugin)
 gsap.registerPlugin(MotionPathHelper)
 gsap.registerPlugin(DrawSVGPlugin)
 
-// Morphed circle
-// M35,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S16.9,0.5,23.3,0.5S35,5.7,35,12.2z
-
-// Circle
-// M23.8,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S5.7,0.5,12.2,0.5S23.8,5.7,23.8,12.2z
-
-// hit
-// M15,12.2c0,6.4-5.2,11.7-11.7,11.7s0-5.2,0-11.7s-6.4-11.7,0-11.7S15,5.7,15,12.2z
-
-// Tick
-// M42.5,0.8L14.5,23.5L6.4,12c-1.1-1.6-3.3-2-4.9-0.8c-1.6,1.1-1.9,3.3-0.8,4.9l10.3,14.5
-// c0.6,0.8,1.4,1.3,2.4,1.5c0.2,0,0.3,0,0.5,0c0.8,0,1.6-0.3,2.2-0.8l31-25c1.5-1.2,1.7-3.4,0.5-4.9C46.2-0.2,44-0.4,42.5,0.8z
-
-// Close
-// M16.2,11.6L5.5,0.9c-1.3-1.3-3.3-1.3-4.6,0s-1.3,3.3,0,4.6l10.7,10.7L0.9,26.8c-1.3,1.3-1.3,3.3,0,4.6
-// c1.3,1.3,3.3,1.3,4.6,0l10.7-10.7l10.7,10.7c1.3,1.3,3.3,1.3,4.6,0c1.3-1.3,1.3-3.3,0-4.6L20.7,16.2L31.4,5.5
-// c1.3-1.3,1.3-3.3,0-4.6c-1.3-1.3-3.3-1.3-4.6,0L16.2,11.6z
-
-// React.useEffect(() => {
-//   if (position > 0) {
-//     gsap.to("#circle", {
-//       keyframes: [
-//         {
-//           morphSVG:
-//             "M35,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S16.9,0.5,23.3,0.5S35,5.7,35,12.2z",
-//           duration: 0.3,
-//         },
-//         {
-//           morphSVG:
-//             "M23.8,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S5.7,0.5,12.2,0.5S23.8,5.7,23.8,12.2z",
-//           duration: 0.3,
-//           ease: "elastic.out(1, .75)",
-//         },
-//       ],
-//     })
-//     gsap.to("#icon", {
-//       keyframes: [
-//         {
-//           morphSVG:
-//             "M23.8,12.2c0,6.4-5.2,11.7-11.7,11.7S0.5,18.6,0.5,12.2S5.7,0.5,12.2,0.5S23.8,5.7,23.8,12.2z",
-//           duration: 0.5,
-//         },
-//         {
-//           morphSVG:
-//             position % 2
-//               ? "M42.5,0.8L14.5,23.5L6.4,12c-1.1-1.6-3.3-2-4.9-0.8c-1.6,1.1-1.9,3.3-0.8,4.9l10.3,14.5c0.6,0.8,1.4,1.3,2.4,1.5c0.2,0,0.3,0,0.5,0c0.8,0,1.6-0.3,2.2-0.8l31-25c1.5-1.2,1.7-3.4,0.5-4.9C46.2-0.2,44-0.4,42.5,0.8z"
-//               : "M16.2,11.6L5.5,0.9c-1.3-1.3-3.3-1.3-4.6,0s-1.3,3.3,0,4.6l10.7,10.7L0.9,26.8c-1.3,1.3-1.3,3.3,0,4.6 c1.3,1.3,3.3,1.3,4.6,0l10.7-10.7l10.7,10.7c1.3,1.3,3.3,1.3,4.6,0c1.3-1.3,1.3-3.3,0-4.6L20.7,16.2L31.4,5.5 c1.3-1.3,1.3-3.3,0-4.6c-1.3-1.3-3.3-1.3-4.6,0L16.2,11.6z",
-//           duration: 0.5,
-//         },
-//       ],
-//     })
-//   }
-//   gsap.to("#circle", {
-//     duration: 0.4,
-//     ease: "power1.inOut",
-//     motionPath: {
-//       path: "#path",
-//       align: "#path",
-//       autoRotate: true,
-//       alignOrigin: [0.5, 0.5],
-//       start: (prevPosition || 0) * 0.1,
-//       end: position * 0.1,
-//     },
-//   })
-// }, [position, prevPosition])
-
 function App() {
-  const [position, setPosition] = React.useState(0)
-  const prevPosition = usePrevious(position)
-
-  const [isInitialCompleted, setIsInitialCompleted] = React.useState(false)
-
   const [currentInput] = useWhatInput()
+
+  const pulsate = (delay = 0) => {
+    gsap.to("#indicator", {
+      keyframes: [{ scale: 1.2 }, { scale: 1 }],
+      repeat: -1,
+      yoyo: true,
+      duration: 0.5,
+      delay,
+      ease: "power1.inOut",
+    })
+  }
+  const stopPulsate = () => {
+    gsap.killTweensOf("#indicator", "scale")
+    gsap.to("#indicator", {
+      scale: 1,
+      duration: 0.5,
+      ease: "power1.inOut",
+    })
+  }
 
   React.useEffect(() => {
     // MotionPathHelper.create("#indicator", {
@@ -110,7 +60,6 @@ function App() {
       .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
       .set(".star", { scale: 0, x: 12, y: 10 })
       .set("#title", { opacity: 0, y: 100 })
-      .set("#intro", { opacity: 0, y: 75 })
       .set("#intro", { opacity: 0, y: 75 })
       .set("#indicator", { scale: 0 })
       .to(".star", {
@@ -134,17 +83,14 @@ function App() {
           start: 0,
           end: 0,
         },
+        scale: 0,
       })
       .to("#indicator", {
         transformOrigin: "50%",
         scale: 1,
-        cursor: "pointer",
+        rotate: -90,
+        onComplete: () => pulsate(3),
       })
-      .to("#star-12", {
-        cursor: "pointer",
-      })
-      .set("#indicator", { rotate: -90 })
-
     // gsap.to(buttonRef.current, {
     //   motionPath: {
     //     path: "#path-1",
@@ -204,7 +150,33 @@ function App() {
   }, [])
 
   const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const setNextQuestion = useMoveIndicator({ buttonRef: buttonRef.current })
+
+  const timerTl = React.useRef(gsap.timeline())
+  const [startTimer, setStartTimer] = React.useState(false)
   const [currentQuestion, setCurrentQuestion] = React.useState(0)
+
+  React.useEffect(() => {
+    if (currentQuestion === 0) {
+      timerTl.current
+        .pause()
+        .to("#indicator", {
+          drawSVG: "0%",
+          ease: "power2.inOut",
+          duration: 1,
+        })
+        .to("#indicator", {
+          drawSVG: "100%",
+          ease: "none",
+          duration: 2, // TODO  back to 20
+          delay: 1,
+          onComplete: () => setNextQuestion((prev) => prev + 1),
+        })
+    }
+    if (currentQuestion === 1) {
+      timerTl.current.play()
+    }
+  }, [currentQuestion, setNextQuestion])
 
   return (
     <div className="App">
@@ -226,11 +198,12 @@ function App() {
               border: none;
               border-radius: 4px;
               background: transparent;
+              cursor: pointer;
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
-            onFocus={() => console.log("focus")}
-            onBlur={() => console.log("blur")}
-            onClick={() => console.log("click")}
+            onFocus={() => currentQuestion === 0 && stopPulsate()}
+            onBlur={() => currentQuestion === 0 && pulsate()}
+            onClick={() => setCurrentQuestion((prev) => prev + 1)}
           />
           <div
             css={css`
@@ -241,13 +214,11 @@ function App() {
               color: #fff;
               width: 50%;
               height: 50%;
-              /* border: 1px solid ${starColor}; */
 
               display: flex;
               flex-direction: column;
               justify-content: flex-start;
               user-select: none;
-
             `}
           >
             <h1
@@ -309,7 +280,6 @@ function App() {
                 strokeLinecap="round"
                 d="M238.2,53.3c0,11.5-9.3,20.8-20.8,20.8c-11.5,0-20.8-9.3-20.8-20.8s9.3-20.8,20.8-20.8
                 C228.9,32.5,238.2,41.8,238.2,53.3z"
-                onClick={() => console.log("clicked")}
               />
               <path
                 id="star-12"
