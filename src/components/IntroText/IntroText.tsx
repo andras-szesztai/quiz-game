@@ -26,8 +26,8 @@ const IntroText = ({isStart, currentInput}: Props) => {
               font-weight: 200 !important;
               margin: 0;
               font-size: 48px;
-              line-height: 1.3;
-              margin-bottom: 24px;
+              line-height: 1.2;
+              margin-bottom: 16px;
             `}
           >
             The life of women and men in Europe

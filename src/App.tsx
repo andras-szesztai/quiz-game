@@ -25,6 +25,7 @@ import {
 } from "./components"
 import { paths, questions } from "./data"
 import { pulsate, stopPulsate } from "./utils"
+import Paragraph from "./components/Paragraph/Paragraph"
 
 const svgDims = 750
 
@@ -112,7 +113,7 @@ function App() {
               transform: translate(-50%, -50%);
               color: #fff;
               width: 50%;
-              height: 50%;
+              height: auto;
 
               display: flex;
               flex-direction: column;
@@ -125,6 +126,7 @@ function App() {
               <QuestionText
                 key={q.number}
                 id={q.number}
+                url={q.url}
                 nextQuestion={nextQuestion}
                 isStart={isStart}
                 question={q.question}
