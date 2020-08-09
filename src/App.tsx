@@ -16,6 +16,7 @@ import { delays } from "./styles/animations"
 import { useMoveIndicator } from "./hooks"
 import questions from "./data/questions"
 import { CorrectIcon } from "./components"
+import paths from "./data/paths"
 
 const starColor = "#F9C750"
 const bgColor = "#577590"
@@ -50,10 +51,10 @@ function App() {
 
   React.useEffect(() => {
     // MotionPathHelper.create("#indicator", {
-    //   path: "#path-2",
+    //   path: "#path-5",
     //   pathOpacity: 0.2,
     //   alignOrigin: [0.5, 0.5],
-    //   start: 0,
+    //   start: 1,
     //   end: 1,
     //   duration: 1,
     // })
@@ -97,7 +98,6 @@ function App() {
   const buttonRef = React.useRef<HTMLButtonElement>(null)
 
   const markCorrect = () => {
-    console.log("markCorrect -> currentQuestion", currentQuestion)
     gsap
       .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
       .set(`#correct-icon-${currentQuestion}`, {
@@ -350,18 +350,14 @@ function App() {
       l7.2,3.8c0.4,0.2,0.8,0,1-0.3c0.1-0.1,0.1-0.3,0.1-0.4l-1.4-8l5.7-5.6c0.3-0.3,0.3-0.8,0-1.1C311.8,73.6,311.7,73.5,311.5,73.5z"
               />
             </g>
-            <path
-              id="path-1"
-              fill="none"
-              // stroke="#333"
-              d="M217.63,52.711 C217.63,52.711 274.928,53.83 299.334,76.656"
-            />
-            <path
-              id="path-2"
-              fill="none"
-              // stroke="#333"
-              d="M298.876,76.827 C298.876,76.827 345.593,101.289 357.584,135.211"
-            />
+            {paths.map((p, i) => (
+              <path
+                id={`path-${i + 1}`}
+                fill="none"
+                //stroke="#333"
+                d={p.d}
+              />
+            ))}
           </svg>
         </div>
       </header>
