@@ -50,6 +50,7 @@ function App() {
   const isInitialized = useInitialize(buttonRef.current)
   const [isStart, setIsStart] = React.useState(false)
   React.useEffect(() => {
+    // TODO make it dynamic
     if (isStart) {
       gsap
         .timeline({ defaults: { ease: "back.out(1.9)", duration: 0.5 } })
@@ -119,15 +120,25 @@ function App() {
               user-select: none;
             `}
           >
-            {/* <IntroText isStart={isStart} currentInput={currentInput} /> */}
+            <IntroText isStart={isStart} currentInput={currentInput} />
             {questions.map((q) => (
               <QuestionText
                 key={q.number}
                 id={q.number}
-                nextQuestion={1}
-                isStart={true}
+                nextQuestion={nextQuestion}
+                isStart={isStart}
                 question={q.question}
                 answers={q.answers}
+                isInteractive={!isAnswerFalse && !isAnswerTrue}
+                isAnswerFalse={isAnswerFalse}
+                isAnswerTrue={isAnswerTrue}
+                handleClick={(isTrue) => {
+                  if (isTrue) {
+                    setIsAnswerTrue(true)
+                  } else {
+                    setIsAnswerFalse(true)
+                  }
+                }}
               />
             ))}
           </div>

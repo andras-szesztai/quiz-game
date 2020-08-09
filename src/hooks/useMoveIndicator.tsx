@@ -21,21 +21,21 @@ const useMoveIndicator = ({
       })
       const text = isAnswerTrue ? "correct" : "false"
       moveTl
-        .set(`#${text}-icon-${nextQuestion - 1}`, {
+        .set(`#${text}-icon-${nextQuestion}`, {
           motionPath: {
-            align: `#path-${nextQuestion - 1}`,
-            path: `#path-${nextQuestion - 1}`,
+            align: `#path-${nextQuestion}`,
+            path: `#path-${nextQuestion}`,
             alignOrigin: [0.5, 0.5],
             start: 0,
             end: 0,
           },
         })
-        .to(`#star-${nextQuestion - 1}`, {
+        .to(`#star-${nextQuestion}`, {
           scale: 0,
           opacity: 0,
         })
         .to(
-          `#${text}-icon-${nextQuestion - 1}`,
+          `#${text}-icon-${nextQuestion}`,
           {
             scale: 1,
           },
@@ -43,14 +43,14 @@ const useMoveIndicator = ({
         )
       if (isAnswerTrue) {
         moveTl.fromTo(
-          `.${text}-line-${nextQuestion - 1}`,
+          `.${text}-line-${nextQuestion}`,
           { drawSVG: "75% 100%" },
           { drawSVG: "0 0", opacity: 0, ease: "power4.out" },
           "-=.4"
         )
       }
       // if (isAnswerFalse) {
-      //   moveTl.fromTo(`#${text}-icon-${nextQuestion - 1}`, {
+      //   moveTl.fromTo(`#${text}-icon-${nextQuestion}`, {
       //     keyframes: [{ x: 10 }, { x: -10 }],
       //   })
       // }
@@ -60,8 +60,8 @@ const useMoveIndicator = ({
         .timeline()
         .to("#indicator", {
           motionPath: {
-            path: `#path-${nextQuestion - 1}`,
-            align: `#path-${nextQuestion - 1}`,
+            path: `#path-${nextQuestion}`,
+            align: `#path-${nextQuestion}`,
             autoRotate: true,
             alignOrigin: [0.5, 0.5],
             start: 0,
@@ -93,8 +93,8 @@ const useMoveIndicator = ({
           buttonRef,
           {
             motionPath: {
-              path: `#path-${nextQuestion - 1}`,
-              align: `#path-${nextQuestion - 1}`,
+              path: `#path-${nextQuestion}`,
+              align: `#path-${nextQuestion}`,
               alignOrigin: [0.5, 0.5],
               start: 0,
               end: 1,

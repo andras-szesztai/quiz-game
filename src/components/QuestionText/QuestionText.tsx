@@ -14,6 +14,10 @@ interface Props {
   isStart: boolean
   question: string
   answers: Answer[]
+  handleClick: (isTrue: boolean) => void
+  isInteractive: boolean
+  isAnswerFalse: boolean
+  isAnswerTrue: boolean
 }
 
 const QuestionText = ({
@@ -22,8 +26,15 @@ const QuestionText = ({
   isStart,
   question,
   answers,
+  handleClick,
+  isInteractive,
+  isAnswerFalse,
+  isAnswerTrue,
 }: Props) => {
   const [position, setPosition] = React.useState(0)
+
+  // TODO setup for coloring
+  const [ selectedAnswer, setSelectedAnswer ] = React.useState(-1)
 
   return (
     <AnimatePresence>
@@ -31,7 +42,7 @@ const QuestionText = ({
         <motion.div
           id={`question-${id}`}
           initial={{
-            opacity: 1,
+            opacity: 0,
           }}
           exit={{
             visibility: "hidden",
@@ -56,7 +67,7 @@ const QuestionText = ({
                 key={a.text}
                 css={css`
                   display: flex;
-                  cursor: pointer;
+                  cursor: ${isInteractive ? "pointer" : "default"};
                   font-family: "Montserrat", sans-serif !important;
 
                   border-radius: 4px;
@@ -69,11 +80,17 @@ const QuestionText = ({
 
                   position: relative;
                 `}
-                onMouseOver={() => {
-                  if (position !== i) {
+                onFocus={() => {
+                  if (isInteractive && position !== i) {
                     setPosition(i)
                   }
                 }}
+                onMouseOver={() => {
+                  if (isInteractive && position !== i) {
+                    setPosition(i)
+                  }
+                }}
+                onClick={() => isInteractive && handleClick(a.isTrue)}
               >
                 {position === i && (
                   <motion.div
@@ -99,8 +116,7 @@ const QuestionText = ({
                     }}
                   />
                 )}
-
-                <div
+                <motion.div
                   css={css`
                     font-size: 16px;
                     font-weight: 500;
@@ -108,7 +124,6 @@ const QuestionText = ({
                     align-self: flex-start;
 
                     color: ${colors.bgRound};
-                    background-color: ${colors.accent};
                     width: 16px;
                     min-width: 16px;
                     height: 16px;
@@ -120,6 +135,14 @@ const QuestionText = ({
                     justify-content: center;
                     align-items: center;
                   `}
+                  initial={{
+                    backgroundColor: colors.accent,
+                  }}
+                  animate={{
+                    backgroundColor: isInteractive
+                      ? colors.accent
+                      : colors.correctDark,
+                  }}
                 />
                 <Paragraph text={a.text} isLeftAlign />
               </button>
