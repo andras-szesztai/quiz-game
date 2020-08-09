@@ -15,7 +15,7 @@ function useInitialize(buttonRef: HTMLButtonElement | null) {
     //   duration: 1,
     // })
     gsap
-      .timeline({ defaults: { ease: "back.out(1.8)", duration: 0.5 } })
+      .timeline({ defaults: { ease: "back.out(1.9)", duration: 0.5 } })
       .set(".star", { scale: 0, x: 12, y: 10 })
       .set(".correct-icon", { scale: 0 })
       .set(".false-icon", { scale: 0 })

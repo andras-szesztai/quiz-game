@@ -16,7 +16,7 @@ import "./App.css"
 import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 import { delays } from "./styles/animations"
 import { useMoveIndicator, useInitialize } from "./hooks"
-import { CorrectIcon, FalseIcon, Stars } from "./components"
+import { CorrectIcon, FalseIcon, Stars, IntroText } from "./components"
 import { paths, questions } from "./data"
 import { pulsate, stopPulsate } from "./utils"
 
@@ -42,7 +42,14 @@ function App() {
   const isInitialized = useInitialize(buttonRef.current)
   const [isStart, setIsStart] = React.useState(false)
   React.useEffect(() => {
-    
+    if (isStart) {
+      gsap.to("#intro-container", {
+        y: -100,
+        opacity: 0,
+        duration: 0.5,
+        ease: "back.in(1.8)",
+      })
+    }
   }, [isStart])
 
   return (
@@ -69,7 +76,7 @@ function App() {
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
             onClick={() => {
-              if (!isStart) {
+              if (isInitialized && !isStart) {
                 stopPulsate()
                 setIsStart(true)
               } else {
@@ -83,6 +90,7 @@ function App() {
           />
           <div
             css={css`
+              font-family: "Montserrat", sans-serif !important;
               position: absolute;
               left: 50%;
               top: 50%;
@@ -97,51 +105,7 @@ function App() {
               user-select: none;
             `}
           >
-            <AnimatePresence>
-              {!isStart && (
-                <motion.h1
-                  id="title"
-                  css={css`
-                    font-weight: 200;
-                    margin: 0;
-                    font-size: 48px;
-                    line-height: 1.3;
-                    margin-bottom: 24px;
-                  `}
-                  exit={{
-                    visibility: "hidden",
-                    transition: { duration: 1, delay: 1 },
-                  }}
-                >
-                  The life of women and men in Europe
-                </motion.h1>
-              )}
-            </AnimatePresence>
-            <p
-              id="intro"
-              css={css`
-                margin: 0;
-                font-size: 16px;
-                font-weight: 500;
-                line-height: 1.7;
-              `}
-            >
-              This quiz is a redesigned version of the introduction to the
-              digital publication{" "}
-              <a
-                href="https://ec.europa.eu/eurostat/cache/infographs/womenmen/bloc-1a.html?lang=en"
-                rel="noopener noreferrer"
-                target="_blank"
-                css={css`
-                  color: ${colors.accent};
-                  ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
-                `}
-              >
-                The life of women and men in Europe – a statistical portrait
-              </a>
-              . Each of the following questions is related to one of the 12
-              parts of the publication.
-            </p>
+            <IntroText isStart={isStart} currentInput={currentInput} />
           </div>
           <svg
             x="0px"
