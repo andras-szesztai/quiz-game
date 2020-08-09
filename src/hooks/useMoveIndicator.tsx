@@ -48,6 +48,11 @@ const useMoveIndicator = ({
           "-=.4"
         )
       }
+      // if (isAnswerFalse) {
+      //   moveTl.fromTo(`#${text}-icon-${nextQuestion - 1}`, {
+      //     keyframes: [{ x: 10 }, { x: -10 }],
+      //   })
+      // }
     }
     if (isAnswerTrue || isAnswerFalse) {
       gsap
