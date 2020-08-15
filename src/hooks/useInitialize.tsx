@@ -1,13 +1,14 @@
 import React from "react"
 import gsap from "gsap"
+// import { MotionPathHelper } from "gsap/MotionPathHelper"
 
-import { pulsate } from "../utils"
+// gsap.registerPlugin(MotionPathHelper)
 
 function useInitialize(buttonRef: HTMLButtonElement | null) {
   const [isInitialized, setIsInitialized] = React.useState(false)
   React.useEffect(() => {
     // MotionPathHelper.create("#indicator", {
-    //   path: "#path-5",
+    //   path: "#path-10",
     //   pathOpacity: 0.2,
     //   alignOrigin: [0.5, 0.5],
     //   start: 1,

@@ -161,7 +161,7 @@ function App() {
                 key={p.d}
                 id={`path-${i + 1}`}
                 fill="none"
-                stroke="#333"
+                // stroke="#333"
                 d={p.d}
               />
             ))}

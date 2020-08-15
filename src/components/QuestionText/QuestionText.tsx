@@ -5,10 +5,12 @@ import { css, jsx } from "@emotion/core"
 import chroma from "chroma-js"
 import gsap from "gsap"
 
-import { colors, buttonNoFocus } from "../../styles/theme"
-import { Answer } from "../../data/questions"
-import Paragraph from "../Paragraph/Paragraph"
 import Button from "../Button/Button"
+import Paragraph from "../Paragraph/Paragraph"
+
+import { Answer } from "../../data/questions"
+
+import { colors, buttonNoFocus } from "../../styles/theme"
 
 interface Props {
   id: number

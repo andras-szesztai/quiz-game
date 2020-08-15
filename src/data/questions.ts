@@ -22,7 +22,7 @@ const questions = [{
 {
   number: 3,
   category: "Health perception",
-  question: "In the EU, how do women and men perceive their health?In the EU, how do women and men perceive their health?",
+  question: "In the EU, how do women and men perceive their health?",
   answers: [
     { selector: "a", text: 'Men are more likely than women to perceive their health as "good"', isTrue: true },
     { selector: "b", text: 'Women are more likely than men to perceive their health as "good"', isTrue: false },
