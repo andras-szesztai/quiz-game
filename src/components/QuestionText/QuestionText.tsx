@@ -254,7 +254,7 @@ const QuestionText = ({
             `}
           >
             <Button
-              text="Next question"
+              text={nextQuestion !== 13 ? "Next question" : "Show my results"}
               currentInput={currentInput}
               handleClick={() => setCurrentQuestion(nextQuestion)}
               withMargin

@@ -1,5 +1,7 @@
 import React from "react"
 import gsap from "gsap"
+import { usePrevious } from "react-use"
+
 import { colors } from "../styles/theme"
 
 interface Params {
@@ -17,6 +19,7 @@ const useMoveIndicator = ({
   nextQuestion,
   currentQuestion,
 }: Params) => {
+  const prevNextQuestion = usePrevious(nextQuestion)
   const didLastRun = React.useRef(false)
   React.useEffect(() => {
     const swapMark = () => {
@@ -56,7 +59,7 @@ const useMoveIndicator = ({
     }
     if (
       nextQuestion !== 13
-        ? isAnswerTrue || isAnswerFalse
+        ? prevNextQuestion && prevNextQuestion !== nextQuestion
         : currentQuestion === nextQuestion && !didLastRun.current
     ) {
       if (nextQuestion === 13) didLastRun.current = true
@@ -72,7 +75,7 @@ const useMoveIndicator = ({
           end: 1,
         },
         duration: 0.5,
-        delay: 3,
+        delay: nextQuestion === 13 ? 1 : 3,
         ease: "power4.inOut",
       })
         .to(
@@ -116,13 +119,14 @@ const useMoveIndicator = ({
             "M229.5,49.6l-7.9-1.1l-3.6-7.3c-0.2-0.3-0.6-0.5-0.9-0.3c-0.1,0.1-0.2,0.2-0.3,0.3l-3.7,7.3l-7.9,1.1c-0.4,0.1-0.7,0.5-0.7,0.9c0,0.2,0.1,0.3,0.2,0.5l5.7,5.6l-1.4,8c-0.1,0.4,0.2,0.8,0.6,0.8c0.2,0,0.3,0,0.5-0.1l7.1-3.8 l7.2,3.8c0.4,0.2,0.8,0,1-0.3c0.1-0.1,0.1-0.3,0.1-0.4l-1.4-8l5.7-5.6c0.3-0.3,0.3-0.8,0-1.1C229.9,49.7,229.7,49.6,229.5,49.6z",
           fill: colors.accent,
           rotate: 72,
+          strokeWidth: 0,
           scale: 2,
           duration: 0.5,
           ease: "elastic.out(1, .8)",
         })
       }
     }
-  }, [isAnswerTrue, isAnswerFalse, buttonRef, nextQuestion, currentQuestion])
+  }, [isAnswerTrue, isAnswerFalse, buttonRef, nextQuestion, currentQuestion, prevNextQuestion])
 }
 
 export default useMoveIndicator

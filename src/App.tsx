@@ -15,6 +15,7 @@ import {
   Stars,
   IntroText,
   QuestionText,
+  OutroText,
 } from "./components"
 
 import { useMoveIndicator, useInitialize, useUpdateQuestion } from "./hooks"
@@ -45,8 +46,8 @@ function App() {
     }
   }, [isAnswerTrue])
 
-  const [currentQuestion, setCurrentQuestion] = React.useState(12)
-  const [nextQuestion, setNextQuestion] = React.useState(12)
+  const [currentQuestion, setCurrentQuestion] = React.useState(0)
+  const [nextQuestion, setNextQuestion] = React.useState(1)
 
   const isInitialized = useInitialize(buttonRef.current)
   useMoveIndicator({
@@ -54,7 +55,7 @@ function App() {
     isAnswerTrue,
     isAnswerFalse,
     nextQuestion,
-    currentQuestion
+    currentQuestion,
   })
   useUpdateQuestion({
     currentQuestion,
@@ -141,6 +142,10 @@ function App() {
                 nextQuestion={nextQuestion}
               />
             ))}
+            <OutroText
+              currentQuestion={currentQuestion}
+              currentInput={currentInput}
+            />
           </div>
           <svg
             x="0px"
