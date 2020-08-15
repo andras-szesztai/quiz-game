@@ -8,6 +8,7 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin"
 import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
 import useWhatInput from "react-use-what-input"
+import { FaTwitter } from "react-icons/fa"
 
 import {
   CorrectIcon,
@@ -28,14 +29,13 @@ import {
 
 import { paths, questions } from "./data"
 
-import "./App.css"
+import "./styles/App.css"
 import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 
 gsap.registerPlugin(MotionPathPlugin)
 gsap.registerPlugin(MorphSVGPlugin)
 gsap.registerPlugin(MotionPathHelper)
 gsap.registerPlugin(DrawSVGPlugin)
-
 
 function App() {
   const [currentInput] = useWhatInput()
@@ -183,16 +183,25 @@ function App() {
               />
               <Stars />
               {paths.map((p, i) => (
-                <path
-                  key={p.d}
-                  id={`path-${i + 1}`}
-                  fill="none"
-                  // stroke="#333"
-                  d={p.d}
-                />
+                <path key={p.d} id={`path-${i + 1}`} fill="none" d={p.d} />
               ))}
             </svg>
           </div>
+          <a
+            css={css`
+              position: absolute;
+              right: 0px;
+              bottom: 0px;
+              margin-right: 24px;
+              margin-bottom: 16px;
+              ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
+            `}
+            href="https://twitter.com/AndSzesztai"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaTwitter color="#FFF" size={28} />
+          </a>
         </header>
       )}
     </div>

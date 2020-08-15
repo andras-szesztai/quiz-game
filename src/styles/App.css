@@ -8,7 +8,18 @@ body {
   background-color: #577590;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+
+.App-header {
+  min-height: 100vh;
+  background-color: #577590;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+svg {
+  opacity: 0;
 }
