@@ -1,17 +1,17 @@
 /** @jsx jsx */
+import React from "react"
 import { AnimatePresence, motion, AnimateSharedLayout } from "framer-motion"
 import { css, jsx } from "@emotion/core"
 import chroma from "chroma-js"
+import gsap from "gsap"
 
-import { colors, buttonNoFocus } from "../../styles/theme"
+import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
 import { Answer } from "../../data/questions"
 import Paragraph from "../Paragraph/Paragraph"
-import React from "react"
 
 interface Props {
   id: number
-  nextQuestion: number
-  isStart: boolean
+  currentQuestion: number
   question: string
   answers: Answer[]
   handleClick: (isTrue: boolean) => void
@@ -19,12 +19,14 @@ interface Props {
   isAnswerFalse: boolean
   isAnswerTrue: boolean
   url: string
+  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>
+  nextQuestion: number
+  currentInput: string
 }
 
 const QuestionText = ({
   id,
-  nextQuestion,
-  isStart,
+  currentQuestion,
   question,
   url,
   answers,
@@ -32,40 +34,85 @@ const QuestionText = ({
   isInteractive,
   isAnswerFalse,
   isAnswerTrue,
+  setCurrentQuestion,
+  nextQuestion,
+  currentInput,
 }: Props) => {
   const [position, setPosition] = React.useState(0)
-
   const [selectedAnswer, setSelectedAnswer] = React.useState(-1)
+
+  const isCurrent = id === currentQuestion
 
   const getColor = (i: number) => {
     if (selectedAnswer === i) {
       if (isAnswerTrue) {
-        return colors.correctDark
+        return colors.correct
       }
       if (isAnswerFalse) {
-        return colors.falseDark
+        return colors.false
       }
     }
     return colors.accent
   }
 
-  // TODO fix this
+  React.useEffect(() => {
+    if (isCurrent && selectedAnswer !== -1 && (isAnswerFalse || isAnswerTrue)) {
+      gsap
+        .timeline()
+        .to(`#result-${id}`, {
+          opacity: 1,
+          y: 10,
+          ease: "back.out(1.8)",
+          duration: 0.5,
+          delay: 0.5,
+        })
+        .to(`#result-${id}`, {
+          opacity: 0,
+          y: -100,
+          ease: "back.in(1.8)",
+          duration: 0.5,
+          delay: 0.5,
+        })
+        .to(`#buttons-${id}`, {
+          opacity: 1,
+          y: -25,
+          ease: "back.out(1.8)",
+          duration: 0.5,
+          delay: 0.5,
+        })
+    }
+  }, [id, isAnswerFalse, isAnswerTrue, isCurrent, selectedAnswer])
+
+  const shouldHide = React.useRef(true)
+
   return (
     <AnimatePresence>
-      {isStart && id === nextQuestion && (
+      {id === currentQuestion && (
         <motion.div
+          id={`question-${id}`}
           initial={{
-            opacity: 0,
+            display: "none",
+          }}
+          animate={{
+            display: "block",
+            transition: { delay: 0.5 },
+          }}
+          onAnimationStart={() => {
+            if (isCurrent && shouldHide.current) {
+              gsap.set(`#result-${id}`, { opacity: 0, y: 100 })
+              gsap.set(`#buttons-${id}`, { opacity: 0, y: 100 })
+              shouldHide.current = false
+            }
           }}
           exit={{
-            visibility: "hidden",
+            display: "none",
             transition: { delay: 0.5 },
           }}
           css={css`
             margin-bottom: 8px;
           `}
         >
-          <div id={`question-${id}`}>
+          <div>
             <h3
               css={css`
                 font-size: 24px;
@@ -170,32 +217,57 @@ const QuestionText = ({
             </AnimateSharedLayout>
           </div>
           <div
+            id={`result-${id}`}
             css={css`
               display: flex;
             `}
           >
             <span
-              id="result"
               css={css`
                 align-self: flex-start;
                 font-size: 16px;
                 font-weight: 500;
                 border-radius: 4px;
-                padding: 8px 32px;
-                background: ${colors.false};
-                color: ${colors.falseDark};
+                padding: 8px 16px;
+                background: ${isAnswerFalse ? colors.false : colors.correct};
+                color: ${colors.bgRound};
               `}
             >
-              INCORRECT
+              {isAnswerFalse ? "INCORRECT" : "CORRECT"}
             </span>
+          </div>
+          <div
+            id={`buttons-${id}`}
+            css={css`
+              display: flex;
+            `}
+          >
+            <button
+              css={css`
+                align-self: flex-start;
+                font-size: 16px;
+                font-weight: 500;
+                border-radius: 4px;
+                padding: 8px 16px;
+                background: ${colors.accent};
+                border: none;
+                color: ${colors.bgRound};
+
+                ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
+
+                cursor: pointer;
+              `}
+              onClick={() => setCurrentQuestion(nextQuestion)}
+            >
+              Next question
+            </button>
             <a
-              id="more"
               href={url}
               rel="noopener noreferrer"
               target="_blank"
               css={css`
                 margin: 0;
-                margin-left: 16px;
+                margin-left: 24px;
                 font-size: 16px;
                 font-weight: 500;
                 line-height: 1.7;
@@ -205,7 +277,7 @@ const QuestionText = ({
                 align-items: center;
               `}
             >
-              Go to publication!
+              Go to publication
             </a>
           </div>
         </motion.div>

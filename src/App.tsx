@@ -37,11 +37,14 @@ gsap.registerPlugin(DrawSVGPlugin)
 function App() {
   const [currentInput] = useWhatInput()
   const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const isInitialized = useInitialize(buttonRef.current)
+
   const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
 
   const [currentQuestion, setCurrentQuestion] = React.useState(0)
   const [nextQuestion, setNextQuestion] = React.useState(1)
+
   useMoveIndicator({
     buttonRef: buttonRef.current,
     isAnswerTrue,
@@ -49,8 +52,13 @@ function App() {
     nextQuestion,
   })
 
-  const isInitialized = useInitialize(buttonRef.current)
-  useUpdateQuestion({ currentQuestion, nextQuestion })
+  useUpdateQuestion({
+    currentQuestion,
+    isAnswerFalse,
+    setIsAnswerFalse,
+    isAnswerTrue,
+    setIsAnswerTrue,
+  })
 
   return (
     <div className="App">
@@ -104,13 +112,12 @@ function App() {
               isIntro={currentQuestion === 0}
               currentInput={currentInput}
             />
-            {/* {questions.map((q) => (
+            {questions.map((q) => (
               <QuestionText
                 key={q.number}
                 id={q.number}
                 url={q.url}
-                nextQuestion={nextQuestion}
-                isStart={isStart}
+                currentQuestion={currentQuestion}
                 question={q.question}
                 answers={q.answers}
                 isInteractive={!isAnswerFalse && !isAnswerTrue}
@@ -122,9 +129,13 @@ function App() {
                   } else {
                     setIsAnswerFalse(true)
                   }
+                  setNextQuestion((prev) => prev + 1)
                 }}
+                currentInput={currentInput}
+                setCurrentQuestion={setCurrentQuestion}
+                nextQuestion={nextQuestion}
               />
-            ))} */}
+            ))}
           </div>
           <svg
             x="0px"
@@ -141,7 +152,7 @@ function App() {
             ))}
             <path
               id="indicator"
-              fill={chroma(colors.accent).alpha(0.25).hex()}
+              fill={chroma(colors.accent).alpha(0.2).hex()}
               strokeWidth={1}
               stroke={colors.accent}
               strokeLinecap="round"
