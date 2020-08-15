@@ -3,13 +3,15 @@ import { AnimatePresence, motion } from "framer-motion"
 import { css, jsx } from "@emotion/core"
 
 import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
+import Button from "../Button/Button"
 
 interface Props {
   isIntro: boolean
   currentInput: string
+  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>
 }
 
-const IntroText = ({ isIntro, currentInput }: Props) => {
+const IntroText = ({ isIntro, currentInput, setCurrentQuestion }: Props) => {
   return (
     <AnimatePresence>
       {isIntro && (
@@ -22,6 +24,7 @@ const IntroText = ({ isIntro, currentInput }: Props) => {
         >
           <h1
             id="title"
+            className="intro-element"
             css={css`
               font-weight: 200 !important;
               margin: 0;
@@ -34,6 +37,7 @@ const IntroText = ({ isIntro, currentInput }: Props) => {
           </h1>
           <p
             id="intro"
+            className="intro-element"
             css={css`
               margin: 0;
               font-size: 16px;
@@ -57,6 +61,19 @@ const IntroText = ({ isIntro, currentInput }: Props) => {
             . Each of the following questions is related to one of the 12 parts
             of the publication.
           </p>
+          <div
+            id="intro-button"
+            className="intro-element"
+            css={css`
+              margin-top: 16px;
+            `}
+          >
+            <Button
+              text="START"
+              currentInput={currentInput}
+              handleClick={() => setCurrentQuestion(1)}
+            />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

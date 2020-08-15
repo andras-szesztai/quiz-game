@@ -5,9 +5,10 @@ import { css, jsx } from "@emotion/core"
 import chroma from "chroma-js"
 import gsap from "gsap"
 
-import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
+import { colors, buttonNoFocus } from "../../styles/theme"
 import { Answer } from "../../data/questions"
 import Paragraph from "../Paragraph/Paragraph"
+import Button from "../Button/Button"
 
 interface Props {
   id: number
@@ -242,25 +243,11 @@ const QuestionText = ({
               display: flex;
             `}
           >
-            <button
-              css={css`
-                align-self: flex-start;
-                font-size: 16px;
-                font-weight: 500;
-                border-radius: 4px;
-                padding: 8px 16px;
-                background: ${colors.accent};
-                border: none;
-                color: ${colors.bgRound};
-
-                ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
-
-                cursor: pointer;
-              `}
-              onClick={() => setCurrentQuestion(nextQuestion)}
-            >
-              Next question
-            </button>
+            <Button
+              text="Next question"
+              currentInput={currentInput}
+              handleClick={() => setCurrentQuestion(nextQuestion)}
+            />
             <a
               href={url}
               rel="noopener noreferrer"

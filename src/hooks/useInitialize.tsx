@@ -19,8 +19,7 @@ function useInitialize(buttonRef: HTMLButtonElement | null) {
       .set(".star", { scale: 0, x: 12, y: 10 })
       .set(".correct-icon", { scale: 0 })
       .set(".false-icon", { scale: 0 })
-      .set("#title", { opacity: 0, y: 100 })
-      .set("#intro", { opacity: 0, y: 75 })
+      .set(".intro-element", { opacity: 0, y: 100 })
       .set("#indicator", { scale: 0 })
       .set(buttonRef, {
         motionPath: {
@@ -42,6 +41,7 @@ function useInitialize(buttonRef: HTMLButtonElement | null) {
       })
       .to("#title", { y: 0, opacity: 1 }, "-=.8")
       .to("#intro", { y: 0, opacity: 1 }, "-=.4")
+      .to("#intro-button", { y: 0, opacity: 1 }, "-=.2")
       .set("#indicator", {
         motionPath: {
           path: "#path-1",

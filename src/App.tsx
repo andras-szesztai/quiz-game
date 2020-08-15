@@ -5,16 +5,10 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin"
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin"
 import { MotionPathHelper } from "gsap/MotionPathHelper"
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin"
-import { usePrevious } from "react-use"
 import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
 import useWhatInput from "react-use-what-input"
-import random from "lodash/random"
-import { AnimatePresence, motion } from "framer-motion"
 
-import "./App.css"
-import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
-import { delays } from "./styles/animations"
 import { useMoveIndicator, useInitialize, useUpdateQuestion } from "./hooks"
 import {
   CorrectIcon,
@@ -23,9 +17,11 @@ import {
   IntroText,
   QuestionText,
 } from "./components"
+
 import { paths, questions } from "./data"
-import { pulsate, stopPulsate } from "./utils"
-import Paragraph from "./components/Paragraph/Paragraph"
+
+import "./App.css"
+import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 
 const svgDims = 750
 
@@ -37,7 +33,6 @@ gsap.registerPlugin(DrawSVGPlugin)
 function App() {
   const [currentInput] = useWhatInput()
   const buttonRef = React.useRef<HTMLButtonElement>(null)
-  const isInitialized = useInitialize(buttonRef.current)
 
   const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
@@ -45,13 +40,13 @@ function App() {
   const [currentQuestion, setCurrentQuestion] = React.useState(0)
   const [nextQuestion, setNextQuestion] = React.useState(1)
 
+  const isInitialized = useInitialize(buttonRef.current)
   useMoveIndicator({
     buttonRef: buttonRef.current,
     isAnswerTrue,
     isAnswerFalse,
     nextQuestion,
   })
-
   useUpdateQuestion({
     currentQuestion,
     isAnswerFalse,
@@ -111,6 +106,7 @@ function App() {
             <IntroText
               isIntro={currentQuestion === 0}
               currentInput={currentInput}
+              setCurrentQuestion={setCurrentQuestion}
             />
             {questions.map((q) => (
               <QuestionText
@@ -165,7 +161,7 @@ function App() {
                 key={p.d}
                 id={`path-${i + 1}`}
                 fill="none"
-                //stroke="#333"
+                stroke="#333"
                 d={p.d}
               />
             ))}

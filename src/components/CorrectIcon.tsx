@@ -10,7 +10,7 @@ const CorrectIcon = ({ id }: Props) => {
     <g id={`correct-icon-${id}`} className="correct-icon">
       <circle fill={colors.correct} cx="217.5" cy="59.6" r="12.3" />
       <path
-        fill={colors.correctDark}
+        fill={colors.bgRound}
         d="M222.6,55.4l-7.7,6.2l-2.2-3.1c-0.3-0.4-0.9-0.5-1.3-0.2c-0.4,0.3-0.5,0.9-0.2,1.3l2.8,4
 		c0.2,0.2,0.4,0.4,0.7,0.4c0,0,0.1,0,0.1,0c0.2,0,0.4-0.1,0.6-0.2l8.5-6.9c0.4-0.3,0.5-0.9,0.1-1.3C223.6,55.2,223,55.1,222.6,55.4z
 		"
