@@ -40,6 +40,7 @@ function App() {
   const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
 
+  const [currentQuestion, setCurrentQuestion] = React.useState(0)
   const [nextQuestion, setNextQuestion] = React.useState(1)
   useMoveIndicator({
     buttonRef: buttonRef.current,
@@ -92,15 +93,8 @@ function App() {
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
             onClick={() => {
-              if (isInitialized && !isStart) {
-                stopPulsate()
-                setIsStart(true)
-              } else {
-                if (isAnswerFalse || isAnswerTrue) {
-                  isAnswerTrue && setIsAnswerTrue(false)
-                  isAnswerFalse && setIsAnswerFalse(false)
-                  setNextQuestion((prev) => prev + 1)
-                }
+              if(currentQuestion !== nextQuestion){
+                setCurrentQuestion(nextQuestion)
               }
             }}
           />
@@ -122,7 +116,7 @@ function App() {
             `}
           >
             <IntroText isStart={isStart} currentInput={currentInput} />
-            {questions.map((q) => (
+            {/* {questions.map((q) => (
               <QuestionText
                 key={q.number}
                 id={q.number}
@@ -142,7 +136,7 @@ function App() {
                   }
                 }}
               />
-            ))}
+            ))} */}
           </div>
           <svg
             x="0px"
