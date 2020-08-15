@@ -40,13 +40,13 @@ function App() {
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
 
   React.useEffect(() => {
-    if(isAnswerTrue){
+    if (isAnswerTrue) {
       correctAnswers.current = correctAnswers.current + 1
     }
   }, [isAnswerTrue])
 
-  const [currentQuestion, setCurrentQuestion] = React.useState(0)
-  const [nextQuestion, setNextQuestion] = React.useState(1)
+  const [currentQuestion, setCurrentQuestion] = React.useState(12)
+  const [nextQuestion, setNextQuestion] = React.useState(12)
 
   const isInitialized = useInitialize(buttonRef.current)
   useMoveIndicator({
@@ -54,6 +54,7 @@ function App() {
     isAnswerTrue,
     isAnswerFalse,
     nextQuestion,
+    currentQuestion
   })
   useUpdateQuestion({
     currentQuestion,

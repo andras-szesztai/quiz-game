@@ -7,14 +7,14 @@ import gsap from "gsap"
 function useInitialize(buttonRef: HTMLButtonElement | null) {
   const [isInitialized, setIsInitialized] = React.useState(false)
   React.useEffect(() => {
-    // MotionPathHelper.create("#indicator", {
-    //   path: "#path-10",
-    //   pathOpacity: 0.2,
-    //   alignOrigin: [0.5, 0.5],
-    //   start: 1,
-    //   end: 1,
-    //   duration: 1,
-    // })
+  //   MotionPathHelper.create("#indicator", {
+  //     path: "#path-12",
+  //     pathOpacity: 0.2,
+  //     alignOrigin: [0.5, 0.5],
+  //     start: 1,
+  //     end: 1,
+  //     duration: 1,
+  //   })
     gsap
       .timeline({ defaults: { ease: "back.out(1.9)", duration: 0.5 } })
       .set(".star", { scale: 0, x: 12, y: 10 })
