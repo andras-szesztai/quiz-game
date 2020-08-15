@@ -1,4 +1,3 @@
-
 .App-header {
   min-height: 100vh;
   background-color: #577590;
@@ -8,4 +7,8 @@
   justify-content: center;
   text-align: center;
   color: white;
+}
+
+svg {
+  opacity: 0;
 }

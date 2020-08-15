@@ -6,8 +6,10 @@ import { useDeviceType } from "."
 function useInitialize(buttonRef: HTMLButtonElement | null) {
   const [isInitialized, setIsInitialized] = React.useState(false)
   const device = useDeviceType()
+  const didRun = React.useRef(false)
   React.useEffect(() => {
-    if (device !== "mobile") {
+    if (device !== "mobile" && !didRun.current) {
+      didRun.current = true
       gsap
         .timeline({ defaults: { ease: "back.out(1.9)", duration: 0.5 } })
         .set(".star", { scale: 0, x: 12, y: 10 })
@@ -15,7 +17,7 @@ function useInitialize(buttonRef: HTMLButtonElement | null) {
         .set(".false-icon", { scale: 0 })
         .set(".intro-element", { opacity: 0, y: 100 })
         .set("#indicator", { scale: 0 })
-        .set("svg", {visibility: "visible"})
+        .set("svg", { opacity: 1 })
         .set(buttonRef, {
           motionPath: {
             path: `#path-1`,

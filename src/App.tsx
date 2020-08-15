@@ -37,7 +37,6 @@ gsap.registerPlugin(MotionPathHelper)
 gsap.registerPlugin(DrawSVGPlugin)
 
 
-gsap.set("svg", {visibility: "hidden"})
 function App() {
   const [currentInput] = useWhatInput()
   const device = useDeviceType()

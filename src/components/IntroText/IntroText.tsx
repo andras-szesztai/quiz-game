@@ -17,8 +17,14 @@ const IntroText = ({ isIntro, currentInput, setCurrentQuestion }: Props) => {
       {isIntro && (
         <motion.div
           id="intro-container"
+          initial={{
+            display: "none",
+          }}
+          animate={{
+            display: "block",
+          }}
           exit={{
-            visibility: "hidden",
+            display: "none",
             transition: { delay: 0.5 },
           }}
         >
