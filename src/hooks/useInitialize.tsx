@@ -15,6 +15,7 @@ function useInitialize(buttonRef: HTMLButtonElement | null) {
         .set(".false-icon", { scale: 0 })
         .set(".intro-element", { opacity: 0, y: 100 })
         .set("#indicator", { scale: 0 })
+        .set("svg", {visibility: "visible"})
         .set(buttonRef, {
           motionPath: {
             path: `#path-1`,
