@@ -78,7 +78,7 @@ const QuestionText = ({
         })
         .to(`#buttons-${id}`, {
           opacity: 1,
-          y: -25,
+          y: 10,
           ease: "back.out(1.8)",
           duration: 0.5,
           delay: 0.5,
@@ -113,6 +113,7 @@ const QuestionText = ({
           }}
           css={css`
             margin-bottom: 8px;
+            position: relative;
           `}
         >
           <div>
@@ -223,6 +224,9 @@ const QuestionText = ({
             id={`result-${id}`}
             css={css`
               display: flex;
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
             `}
           >
             <span
@@ -243,12 +247,17 @@ const QuestionText = ({
             id={`buttons-${id}`}
             css={css`
               display: flex;
+              justify-content: center;
+              position: absolute;
+              width: 100%;
+              left: 0%;
             `}
           >
             <Button
               text="Next question"
               currentInput={currentInput}
               handleClick={() => setCurrentQuestion(nextQuestion)}
+              withMargin
             />
             <a
               href={url}
@@ -256,7 +265,7 @@ const QuestionText = ({
               target="_blank"
               css={css`
                 margin: 0;
-                margin-left: 24px;
+                margin-left: 16px;
                 font-size: 16px;
                 font-weight: 500;
                 line-height: 1.7;

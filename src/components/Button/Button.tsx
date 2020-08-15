@@ -7,9 +7,10 @@ interface Props {
   text: string
   currentInput: string
   handleClick: () => void
+  withMargin?: boolean
 }
 
-const Button = ({ text, currentInput, handleClick }: Props) => {
+const Button = ({ text, currentInput, handleClick, withMargin }: Props) => {
   return (
     <button
       css={css`
@@ -18,6 +19,7 @@ const Button = ({ text, currentInput, handleClick }: Props) => {
         font-weight: 500;
         border-radius: 4px;
         padding: 8px 16px;
+        margin-right: ${withMargin ? 16 : 0}px;
         background: ${colors.accent};
         border: none;
         color: ${colors.bgRound};

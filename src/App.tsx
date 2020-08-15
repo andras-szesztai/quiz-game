@@ -9,7 +9,6 @@ import { jsx, css } from "@emotion/core"
 import chroma from "chroma-js"
 import useWhatInput from "react-use-what-input"
 
-import { useMoveIndicator, useInitialize, useUpdateQuestion } from "./hooks"
 import {
   CorrectIcon,
   FalseIcon,
@@ -17,6 +16,8 @@ import {
   IntroText,
   QuestionText,
 } from "./components"
+
+import { useMoveIndicator, useInitialize, useUpdateQuestion } from "./hooks"
 
 import { paths, questions } from "./data"
 
@@ -33,9 +34,16 @@ gsap.registerPlugin(DrawSVGPlugin)
 function App() {
   const [currentInput] = useWhatInput()
   const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const correctAnswers = React.useRef(0)
 
   const [isAnswerFalse, setIsAnswerFalse] = React.useState(false)
   const [isAnswerTrue, setIsAnswerTrue] = React.useState(false)
+
+  React.useEffect(() => {
+    if(isAnswerTrue){
+      correctAnswers.current = correctAnswers.current + 1
+    }
+  }, [isAnswerTrue])
 
   const [currentQuestion, setCurrentQuestion] = React.useState(0)
   const [nextQuestion, setNextQuestion] = React.useState(1)
