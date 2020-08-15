@@ -46,14 +46,10 @@ const QuestionText = ({
 
   const isCurrent = id === currentQuestion
 
-  const getColor = (i: number) => {
-    if (selectedAnswer === i) {
-      if (isAnswerTrue) {
-        return colors.correct
-      }
-      if (isAnswerFalse) {
-        return colors.false
-      }
+  const getColor = (isTrue: boolean) => {
+    if (selectedAnswer > -1) {
+      if (isTrue) return colors.correct
+      return colors.false
     }
     return colors.accent
   }
@@ -71,7 +67,7 @@ const QuestionText = ({
         })
         .to(`#result-${id}`, {
           opacity: 0,
-          y: -100,
+          y: 100,
           ease: "back.in(1.8)",
           duration: 0.5,
           delay: 0.5,
@@ -165,7 +161,7 @@ const QuestionText = ({
                     }
                   }}
                 >
-                  {position === i && isInteractive && (
+                  {position === i && (isInteractive || selectedAnswer > -1) && (
                     <motion.div
                       css={css`
                         position: fixed;
@@ -212,7 +208,7 @@ const QuestionText = ({
                       backgroundColor: colors.accent,
                     }}
                     animate={{
-                      backgroundColor: getColor(i),
+                      backgroundColor: getColor(a.isTrue),
                     }}
                   />
                   <Paragraph text={a.text} isLeftAlign />

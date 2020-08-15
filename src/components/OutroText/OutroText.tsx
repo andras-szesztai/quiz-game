@@ -9,10 +9,15 @@ import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
 
 interface Props {
   currentQuestion: number
+  correctAnswers: number
   currentInput: string
 }
 
-const OutroText = ({ currentQuestion, currentInput }: Props) => {
+const OutroText = ({
+  currentQuestion,
+  currentInput,
+  correctAnswers,
+}: Props) => {
   const isLast = currentQuestion === 13
   React.useEffect(() => {
     if (isLast) {
@@ -52,7 +57,8 @@ const OutroText = ({ currentQuestion, currentInput }: Props) => {
               margin-bottom: 16px;
             `}
           >
-            Your score is <CountUp start={0} end={12} delay={3} duration={1} />
+            Your score is{" "}
+            <CountUp start={0} end={correctAnswers} delay={3} duration={1} />
             /12
           </p>
           <a
