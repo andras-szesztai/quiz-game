@@ -5,19 +5,19 @@ import { css, jsx } from "@emotion/core"
 import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
 
 interface Props {
-  isStart: boolean,
+  isIntro: boolean
   currentInput: string
 }
 
-const IntroText = ({isStart, currentInput}: Props) => {
+const IntroText = ({ isIntro, currentInput }: Props) => {
   return (
     <AnimatePresence>
-      {!isStart && (
+      {isIntro && (
         <motion.div
           id="intro-container"
           exit={{
             visibility: "hidden",
-            transition: { delay: .5 },
+            transition: { delay: 0.5 },
           }}
         >
           <h1

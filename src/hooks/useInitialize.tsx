@@ -56,6 +56,7 @@ function useInitialize(buttonRef: HTMLButtonElement | null) {
       .to("#indicator", {
         transformOrigin: "50%",
         scale: 1,
+        onComplete: () => setIsInitialized(true),
       })
   }, [buttonRef, setIsInitialized])
 

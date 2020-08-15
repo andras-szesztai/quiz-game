@@ -15,7 +15,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import "./App.css"
 import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
 import { delays } from "./styles/animations"
-import { useMoveIndicator, useInitialize } from "./hooks"
+import { useMoveIndicator, useInitialize, useUpdateQuestion } from "./hooks"
 import {
   CorrectIcon,
   FalseIcon,
@@ -50,22 +50,7 @@ function App() {
   })
 
   const isInitialized = useInitialize(buttonRef.current)
-  const [isStart, setIsStart] = React.useState(false)
-  React.useEffect(() => {
-    // TODO make it dynamic
-    if (isStart) {
-      gsap
-        .timeline({ defaults: { ease: "back.out(1.9)", duration: 0.5 } })
-        .to("#intro-container", {
-          y: -100,
-          opacity: 0,
-          duration: 0.5,
-          ease: "back.in(1.8)",
-        })
-        .set(`#question-${nextQuestion}`, { opacity: 0, y: 100 })
-        .to(`#question-${nextQuestion}`, { opacity: 1, y: 0 }, "+=.5")
-    }
-  }, [isStart, nextQuestion])
+  useUpdateQuestion({ currentQuestion, nextQuestion })
 
   return (
     <div className="App">
@@ -87,13 +72,13 @@ function App() {
               border: none;
               border-radius: 4px;
               background: transparent;
-              cursor: ${isAnswerFalse || isAnswerTrue || !isStart
+              cursor: ${isAnswerFalse || isAnswerTrue || currentQuestion === 0
                 ? "pointer"
                 : "default"};
               ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
             `}
             onClick={() => {
-              if(currentQuestion !== nextQuestion){
+              if (isInitialized && currentQuestion !== nextQuestion) {
                 setCurrentQuestion(nextQuestion)
               }
             }}
@@ -115,7 +100,10 @@ function App() {
               user-select: none;
             `}
           >
-            <IntroText isStart={isStart} currentInput={currentInput} />
+            <IntroText
+              isIntro={currentQuestion === 0}
+              currentInput={currentInput}
+            />
             {/* {questions.map((q) => (
               <QuestionText
                 key={q.number}
