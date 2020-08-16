@@ -9,9 +9,15 @@ interface Props {
   isIntro: boolean
   currentInput: string
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>
+  isMobile: boolean
 }
 
-const IntroText = ({ isIntro, currentInput, setCurrentQuestion }: Props) => {
+const IntroText = ({
+  isIntro,
+  currentInput,
+  setCurrentQuestion,
+  isMobile,
+}: Props) => {
   return (
     <AnimatePresence>
       {isIntro && (
@@ -34,7 +40,7 @@ const IntroText = ({ isIntro, currentInput, setCurrentQuestion }: Props) => {
             css={css`
               font-weight: 200 !important;
               margin: 0;
-              font-size: 48px;
+              font-size: ${isMobile ? 32 : 48}px;
               line-height: 1.2;
               margin-bottom: 16px;
             `}
@@ -48,7 +54,7 @@ const IntroText = ({ isIntro, currentInput, setCurrentQuestion }: Props) => {
               margin: 0;
               font-size: 16px;
               font-weight: 500;
-              line-height: 1.7;
+              line-height: ${isMobile ? 1.6 : 1.7};
             `}
           >
             This quiz is a redesigned version of the introduction to the digital

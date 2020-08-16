@@ -17,7 +17,7 @@ export default function Disclaimer() {
         z-index: 100;
         height: ${height}px;
         width: ${width}px;
-        font-size: 48px;
+        font-size: 32px;
 
         background-color: ${chroma(colors.bgRound).alpha(0.98).hex()};
         padding: 32px;
@@ -27,19 +27,18 @@ export default function Disclaimer() {
         align-items: center;
         flex-direction: column;
         color: ${colors.accent};
-        font-weight: 200;
+        font-weight: 300;
         text-align: center;
 
         .explain {
           margin-top: 8px;
-          font-size: 24px;
-          font-weight: 500;
+          font-size: 16px;
         }
       `}
     >
       <p>Sorry, the dashboard has not yet been optimized for mobile.</p>
       <p className="explain">
-        Please use it in your desktop browser until mobile layout will be added!
+        Please use it in your desktop browser until mobile layout is added!
       </p>
       <div style={{ marginTop: 8 }}>
         <IoMdBuild size={30} color={colors.accent} />
