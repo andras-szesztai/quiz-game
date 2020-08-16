@@ -22,3 +22,18 @@ export const buttonNoFocus = css`
     outline: none;
   }
 `
+
+export const twitterMobile = css`
+  right: 0px;
+  top: 0px;
+  margin-right: 20px;
+  margin-top: 16px;
+`
+
+
+export const twitterNotMobile = css`
+  right: 0px;
+  bottom: 0px;
+  margin-right: 24px;
+  margin-bottom: 16px;
+`

@@ -30,8 +30,12 @@ import {
 import { paths, questions } from "./data"
 
 import "./styles/App.css"
-import { buttonFocus, buttonNoFocus, colors } from "./styles/theme"
-import { isMobile } from "react-device-detect"
+import {
+  buttonFocus,
+  buttonNoFocus,
+  colors,
+  twitterNotMobile,
+} from "./styles/theme"
 
 gsap.registerPlugin(MotionPathPlugin)
 gsap.registerPlugin(MorphSVGPlugin)
@@ -44,7 +48,7 @@ function App() {
   const isMobile = device === "mobile"
   const { width, height } = useWindowSize()
 
-  const svgDims = device === "mobile" ? 350 : 750
+  const svgDims = device === "mobile" ? 325 : 750
 
   const buttonRef = React.useRef<HTMLButtonElement>(null)
   const correctAnswers = React.useRef(0)
@@ -81,7 +85,7 @@ function App() {
     <div>
       <header
         css={css`
-          min-height: -webkit-fill-available;
+          height: ${height}px;
           width: ${width}px;
 
           background-color: #577590;
@@ -124,10 +128,11 @@ function App() {
           <div
             css={css`
               font-family: "Montserrat", sans-serif !important;
-              position: absolute;
+              position: ${isMobile ? "fixed" : "absolute"};
               left: 50%;
-              top: 540px;
-              transform: translate(-50%, -50%);
+              top: ${!isMobile && "50%"};
+              bottom: ${isMobile && "120px"};
+              transform: translate(-50%, ${isMobile ? 0 : -50}%);
               color: #fff;
               width: ${isMobile ? "90%" : "50%"};
               height: auto;
@@ -206,10 +211,7 @@ function App() {
         <a
           css={css`
             position: fixed;
-            right: 0px;
-            bottom: 0px;
-            margin-right: 24px;
-            margin-bottom: 16px;
+            ${twitterNotMobile}
             ${currentInput === "mouse" ? buttonNoFocus : buttonFocus}
           `}
           href="https://twitter.com/AndSzesztai"

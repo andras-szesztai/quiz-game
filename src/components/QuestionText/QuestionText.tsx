@@ -115,12 +115,16 @@ const QuestionText = ({
           css={css`
             margin-bottom: ${isMobile ? 0 : 8}px;
             position: relative;
+            background-color: ${isMobile
+              ? chroma(colors.bgRound).alpha(0.5).hex()
+              : "transparent"};
+            border-radius: 4px;
           `}
         >
           <div>
             <h3
               css={css`
-                font-size: 24px;
+                font-size: ${isMobile ? 20 : 24}px;
                 font-weight: 300;
                 text-align: left;
                 margin: 0;

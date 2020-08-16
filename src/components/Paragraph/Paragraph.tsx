@@ -15,7 +15,7 @@ const Paragraph = ({ isLeftAlign, text, isMobile }: Props) => {
         margin: 0;
         font-size: 16px;
         font-weight: 500;
-        line-height: ${isMobile ? 1.6 : 1.7};
+        line-height: ${isMobile ? 1.5 : 1.7};
         text-align: ${isLeftAlign ? "left" : "center"};
         margin-bottom: ${isMobile ? 8 : 4}px;
       `}

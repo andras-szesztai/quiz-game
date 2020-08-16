@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { AnimatePresence, motion } from "framer-motion"
 import { css, jsx } from "@emotion/core"
+import chroma from "chroma-js"
 
 import { colors, buttonNoFocus, buttonFocus } from "../../styles/theme"
 import Button from "../Button/Button"
@@ -33,6 +34,12 @@ const IntroText = ({
             display: "none",
             transition: { delay: 0.5 },
           }}
+          css={css`
+            background-color: ${isMobile
+              ? chroma(colors.bgRound).alpha(0.5).hex()
+              : "transparent"};
+            border-radius: 4px;
+          `}
         >
           <h1
             id="title"
