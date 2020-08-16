@@ -1,13 +1,13 @@
-import React from "react"
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core"
 
 interface Props {
   isLeftAlign?: boolean
   text: string
+  isMobile: boolean
 }
 
-const Paragraph = ({ isLeftAlign, text }: Props) => {
+const Paragraph = ({ isLeftAlign, text, isMobile }: Props) => {
   return (
     <p
       id="intro"
@@ -15,9 +15,9 @@ const Paragraph = ({ isLeftAlign, text }: Props) => {
         margin: 0;
         font-size: 16px;
         font-weight: 500;
-        line-height: 1.7;
+        line-height: ${isMobile ? 1.6 : 1.7};
         text-align: ${isLeftAlign ? "left" : "center"};
-        margin-bottom: 8px;
+        margin-bottom: ${isMobile ? 8 : 4}px;
       `}
     >
       {text}

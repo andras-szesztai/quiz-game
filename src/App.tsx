@@ -126,10 +126,10 @@ function App() {
               font-family: "Montserrat", sans-serif !important;
               position: absolute;
               left: 50%;
-              top: 550px;
+              top: 540px;
               transform: translate(-50%, -50%);
               color: #fff;
-              width: ${isMobile ? "85%" : "50%"};
+              width: ${isMobile ? "90%" : "50%"};
               height: auto;
 
               display: flex;
@@ -166,6 +166,7 @@ function App() {
                 currentInput={currentInput}
                 setCurrentQuestion={setCurrentQuestion}
                 nextQuestion={nextQuestion}
+                isMobile={isMobile}
               />
             ))}
             <OutroText

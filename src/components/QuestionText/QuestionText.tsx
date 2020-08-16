@@ -25,6 +25,7 @@ interface Props {
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>
   nextQuestion: number
   currentInput: string
+  isMobile: boolean
 }
 
 const QuestionText = ({
@@ -40,6 +41,7 @@ const QuestionText = ({
   setCurrentQuestion,
   nextQuestion,
   currentInput,
+  isMobile,
 }: Props) => {
   const [position, setPosition] = React.useState(0)
   const [selectedAnswer, setSelectedAnswer] = React.useState(-1)
@@ -84,6 +86,9 @@ const QuestionText = ({
 
   const shouldHide = React.useRef(true)
 
+  const nextText = !isMobile ? "Next question" : "NEXT"
+  const resultText = !isMobile ? "Show my results" : "RESULTS"
+
   return (
     <AnimatePresence>
       {id === currentQuestion && (
@@ -108,7 +113,7 @@ const QuestionText = ({
             transition: { delay: 0.5 },
           }}
           css={css`
-            margin-bottom: 8px;
+            margin-bottom: ${isMobile ? 0 : 8}px;
             position: relative;
           `}
         >
@@ -119,7 +124,7 @@ const QuestionText = ({
                 font-weight: 300;
                 text-align: left;
                 margin: 0;
-                margin-bottom: 24px;
+                margin-bottom: ${isMobile ? 16 : 24}px;
                 position: relative;
               `}
             >
@@ -211,7 +216,7 @@ const QuestionText = ({
                       backgroundColor: getColor(a.isTrue),
                     }}
                   />
-                  <Paragraph text={a.text} isLeftAlign />
+                  <Paragraph text={a.text} isLeftAlign isMobile={isMobile} />
                 </button>
               ))}
             </AnimateSharedLayout>
@@ -250,7 +255,7 @@ const QuestionText = ({
             `}
           >
             <Button
-              text={nextQuestion !== 13 ? "Next question" : "Show my results"}
+              text={nextQuestion !== 13 ? nextText : resultText}
               currentInput={currentInput}
               handleClick={() => setCurrentQuestion(nextQuestion)}
               withMargin
